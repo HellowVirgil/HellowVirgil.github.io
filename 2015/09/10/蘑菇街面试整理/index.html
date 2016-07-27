@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 蘑菇街面试整理 · VirgilZone</title><meta name="description" content="蘑菇街面试整理 - Virgil"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://hellowvirgil.github.io/atom.xml" title="VirgilZone"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/HellowVirgil" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="http://weibo.com/u/3074324883" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="http://www.zhihu.com/people/callmevirgil" target="_blank" class="nav-list-link">ZHIHU</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">蘑菇街面试整理</h1><div class="post-info">Sep 10, 2015</div><div class="post-content"><p>离开杭州前的最后一天跑去财富大厦面试，不得不说面试官给人的感觉很好，以下是几个我比较有印象的问题：</p>
+<blockquote>
+<p>做过最有难度的项目？其中遇到的问题？</p>
+</blockquote>
+<p>我回答了询盘落地页，其中遇到了打点曝光，跨域等问题。接着面试官问跨域的解决方案？josnp ， CORS ，服务器代理， document.domain ， websocket等。每样都大概介绍了优缺点和应用场景。接着问 josnp 的实现原理，回答是本质上是通过创建 script 实现跨域，将返回的 json 数据做为参数传入 callback。</p>
+<blockquote>
+<p>页面优化的方法？</p>
+</blockquote>
+<p>压缩 js ， css ，减少 http 请求， css sprite ，减少 cookie 大小等。</p>
+<blockquote>
+<p>将来想在前端发展的方向？</p>
+</blockquote>
+<p>我回答移动端（个人兴趣）和搜索场景（主要我觉得容易上手）。移动端需要做哪些优化？只答了一部分，面试官说你没有主动去学习移动端知识啊 - - 确实是，要吸取教训。<br>移动端的优化有首屏加载，按需加载，滚动加载， 使用 Loading 进度条，使用 css3 、 iconfont 代替图片， touch 代替  click ，缓存 dom 选择与计算 ， 不滥用 float ，避免重设图片大小，标准化浏览器前缀，尽量使用 css3 动画等。</p>
+<blockquote>
+<p>对开源项目的贡献？最近关注的开源项目？</p>
+</blockquote>
+<p>我回答了对 fxs 前端技能树的贡献，最近关注的是 Sea.js。然后面试官问了 Sea.js 模块 reuire 时才调用， ddefine 时只加载是如何实现的？这个没答上来。结束后查了资料，发现 sea.js 由模块状态的流转来定义行为， define 一个模块时，加载结束回调函数会将 mod.status 变成 LOADED ， require 方法的回调函数会判断当前 mod 状态，mod.status &lt; STATUS.EXECUTING 会执行加载的模块，执行结束后会将 mod.status 变成 EXECUTED。</p>
+<blockquote>
+<p>在阿里实习印象最深的是什么？</p>
+</blockquote>
+<p>我回答了搜索业务场景下的组件模块化，即 Normandy 平台，还有前端集成测试。面试官接着问如果让你做组件化，你会怎么做？我答会按功能进行封装，尽量保证组件的复用性，抽象出相同的部分。面试官继续问封装过什么组件么？我回答了懒加载组件。接着面试官问如何触发懒加载？可不可以优化？我回答通过检测 scrollTop 来触发懒加载，这样会一直计算 scrollTop 的值，优化的办法是不要每次滚轮滚动都计算 scrollTop ，而是每隔一个断点计算一次（比如懒加载的模块高度为 300px ，那就每隔 300px 触发一次计算，若满足条件则加载），可以大大减少计算量。</p>
+<blockquote>
+<p>对 Flux 应用单向数据流的理解？</p>
+</blockquote>
+<p>这个不了解，查阅资料后发现 Flux 是 Facebook 用户建立客户端 Web 应用的前端架构， 它通过利用一个单向的数据流补充了 React 的组合视图组件，这更是一种模式而非正式框架，你能够无需许多新代码情况下立即开始使用 Flux 。</p>
+<p><img src="http://7xiw1x.com1.z0.glb.clouddn.com/flux.png" alt="Flux"></p>
+<p>一个单向数据流是Flux模式的核心，上面示图应该是Flux程序员心中主要的模型图。dispatcher 存储和视图是有着不同输入输出的独立节点，Action动作是一个简单对象，只是包含新的数据和一个标识符类型的属性。</p>
+<p>视图也许引起新的动作Action，这个动作作为用户交互的响应将在整个系统传播：</p>
+<p><img src="http://7xiw1x.com1.z0.glb.clouddn.com/flux2.png" alt="Flux"></p>
+<p>所有通过dispatcher的数据流将作为一个集中式Hub，动作Action在一个action creator方法中被提供给dispatcher，这个动作通常来自于视图中用户的交互，dispatcher然后调用存储已经注册其中的回调函数，分发Action动作到所有的存储，在它们注册的回调函数中，存储会响应每个和它保存的状态有关的每个动作Action，存储然后发射一个 change改变的事件去提醒controller-view控制器-视图，更新到刚刚改变的新数据。controller-view监听这些事件，然后在一个事件处理器中从存储中获取数据，controller-view调用它们自己的”setState()”方法，这会触发视图的重新渲染，包括DOM组件树中所有更新。</p>
+<blockquote>
+<p>熟悉公司的发布流程么？</p>
+</blockquote>
+<p>是的，为此我还用 Node.js 写了一个发布 style 应用的插件。接着介绍了这个插件如何实现的。</p>
+<p>通过这次面试了解到自己还有很多不足，没有深抓细节、不够主动，还有注意要有意识地向自己了解的方向引导，下次一定做得更好。</p>
+</div></article></div></section><footer><div class="paginator"><a href="/2015/09/21/百度面试整理/" class="prev">上一篇</a><a href="/2015/09/03/拥抱变化/" class="next">下一篇</a></div><div data-thread-key="2015/09/10/蘑菇街面试整理/" data-title="蘑菇街面试整理" data-url="http://hellowvirgil.github.io/2015/09/10/蘑菇街面试整理/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+
+</script><div class="copyright"><p>© 2016 <a href="http://hellowvirgil.github.io">Virgil</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>

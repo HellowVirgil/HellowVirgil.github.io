@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 一个成功的git分支模型（翻译） · VirgilZone</title><meta name="description" content="一个成功的git分支模型（翻译） - Virgil"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://hellowvirgil.github.io/atom.xml" title="VirgilZone"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/HellowVirgil" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="http://weibo.com/u/3074324883" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="http://www.zhihu.com/people/callmevirgil" target="_blank" class="nav-list-link">ZHIHU</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">一个成功的git分支模型（翻译）</h1><div class="post-info">Aug 7, 2015</div><div class="post-content"><p>以下翻译自<a href="http://nvie.com/posts/a-successful-git-branching-model/" target="_blank" rel="external">A successful Git branching model</a> by Vincent Driessen</p>
+<p>在这篇文章中，我提出了一个开发模型。大约一年前我介绍过我所有的项目（包括工作上和私人的），经过一年的时间，这个模型已经被证明是非常成功的。我一直想把这些写下来，但直到现在我才有时间来做这些。这篇文章中不会谈论任何项目的细节，只包含对<strong>分支策略</strong>和<strong>发布管理</strong>的探讨。</p>
+<p><img src="http://7xiw1x.com1.z0.glb.clouddn.com/git-model@2x.png" alt="git-model"></p>
+<p>它所着重围绕的Git是我们所有源代码的版本控制工具。</p>
+<blockquote>
+<p>为什么是 git ？</p>
+</blockquote>
+<p>在网上我们能看到很多有关于 Git 与集中式代码控制系统之间孰优孰劣的深入讨论，大量的争论在这个问题上产生。然而作为一个开发者，我喜欢Git胜过其他所有代码管理工具。Git 真正地改变了开发者对于合并（merge）还有分支（branch）的理解。就我最初接触的 CVS/Subversion 而言，合并/分支 总是被看做一件很恐怖的事情（“一定要小心合并冲突，出问题了他们会咬人的！”）或每隔一段时间做的事。</p>
+<p>但是 Git 不一样，在 Git 中这些操作非常简洁明了，而且被认为是日常工作流程的核心部分之一。例如，在 CVS/Subversion 的书籍中，分支和合并的内容会在后面的章节讨论（针对高级用户）。然而在每本 Git 教程中，这部分内容已经涵盖在前三章（基础）中了。</p>
+<p>由于它的简单性和复用性，分支和合并再也不是一件值得惧怕的事情。版本控制工具就应该将有助于分支/合并放在首位，它比任何其他事情都重要。</p>
+<p>了解了工具之后，让我们把目光转向开发模型。我在这里想介绍的模型实质上不过是每个团队成员都必须遵循的一组程序，目的是管理软件的开发过程。</p>
+<blockquote>
+<p>分散但集中</p>
+</blockquote>
+<p>我们使用和分支模型运作良好的资源库设置，它有一个“真实的“中心库。值得注意的是，这个库仅仅被看做是中心库（自从 Git 被设计为分布式代码管理系统，技术层面就不存在中心库这个概念）。我们将把这个库称为 origin ，这个名称对于所有 Git 用户来说都很熟悉。</p>
+<p><img src="http://7xiw1x.com1.z0.glb.clouddn.com/centr-decentr@2x.png" alt="centr-decentr"></p>
+<p>每个开发者都从 origin 上发布（push）和同步（pull）。但是除了集中地 push-pull 关系，每个开发者也可能从其他团队成员或子团队中同步改变的代码。举个例子，这可能在两个或多个开发者共同开发一个新的分支的时候有用。在上图中，包含 Alice 和 Bob，Alice 和 David，Clair 和 David 三个子团队。</p>
+<p>从技术上而言，这不过意味着 Alice 定义了一个叫做 Bob  的远程分支，指向 Bob 的仓库，反之亦然。</p>
+<blockquote>
+<p>主要的分支</p>
+</blockquote>
+<p>最为核心的，这个开发模型受到了目前其他模型的极大鼓舞。中心库在无限的生命周期中始终包含两个主要的分支：</p>
+<ul>
+<li>master</li>
+<li>develop</li>
+</ul>
+<p>每一个 Git 的使用者都应该熟悉本地主分支（master branch at origin）。它和主分支是并行的，其他的分支叫做开发分支（develop）。</p>
+<p><img src="http://7xiw1x.com1.z0.glb.clouddn.com/main-branches@2x.png" alt="main-branches"></p>
+<p>我们认为 origin/master 是主要分支是由于 Head 标记的源码总是反应着生产准备状态。</p>
+<p>我们认为 origin/develop 也是主要的分支是由于 HEAD 标记反应着为下一个版本最新提交的开发修改。有些人把这个叫做集成分支。</p>
+<p>当开发分支中的源码趋于稳定并准备发布时，所有的修改都应该和主分支合并，并且以发布版本号进行标记。这里应该如何做将在后面进一步讨论。</p>
+<p>因此，每当有修改要与主分支合并，定义上这都是一个新的版本。我们往往对此非常严格。理论上，每当主分支上有提交时，我们就使用一个 Git 钩子脚本（Git hook script）来完成自动化构建，把软件转出到生产服务器上。</p>
+</div></article></div></section><footer><div class="paginator"><a href="/2015/08/07/《深入浅出Node-js》读书笔记/" class="prev">上一篇</a><a href="/2015/08/03/将本地包上传到远程服务器方法探讨/" class="next">下一篇</a></div><div data-thread-key="2015/08/07/一个成功的git分支模型（翻译）/" data-title="一个成功的git分支模型（翻译）" data-url="http://hellowvirgil.github.io/2015/08/07/一个成功的git分支模型（翻译）/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+
+</script><div class="copyright"><p>© 2016 <a href="http://hellowvirgil.github.io">Virgil</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>

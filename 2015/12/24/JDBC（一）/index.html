@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> JDBC（一） · VirgilZone</title><meta name="description" content="JDBC（一） - Virgil"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://hellowvirgil.github.io/atom.xml" title="VirgilZone"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/HellowVirgil" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="http://weibo.com/u/3074324883" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="http://www.zhihu.com/people/callmevirgil" target="_blank" class="nav-list-link">ZHIHU</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">JDBC（一）</h1><div class="post-info">Dec 24, 2015</div><div class="post-content"><h2 id="一、JDBC标准">一、JDBC标准</h2><blockquote>
+<p>什么是JDBC？</p>
+</blockquote>
+<p>JDBC（Java Database Connectivity），Java访问数据库的解决方案。</p>
+<p>JDBC分为两部分：<br>A.接口(1) 由SUN公司统一提出<br>B.实现类(n) 也叫驱动，由数据库厂商实现<br>注意：</p>
+<ul>
+<li>只需要学习一套接口</li>
+<li>使用时要导入相应的驱动</li>
+</ul>
+<p><strong><em>JDBC工作过程：</em></strong></p>
+<ul>
+<li><p>加载驱动</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//执行这个类的静态块，而该类的静态块中自行实现了注册的功能</span></span><br><span class="line"><span class="keyword">Class</span>.forName(<span class="string">"oracle.jdbc.OracleDriver"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>建立连接</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Connection</span> conn = DriverManager.getConnection(<span class="string">"url"</span>,<span class="string">"uesername"</span>,<span class="string">"password"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建语句对象</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">Statement</span> <span class="keyword">stmt </span>= conn.createStatement()<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行SQL语句</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> sql = <span class="string">"xxxxx"</span>;</span><br><span class="line"><span class="built_in">boolean</span> flag = stmt<span class="built_in">.</span>execute(sql);	<span class="comment">//能够执行所有SQL，通常发送DDL语句</span></span><br><span class="line"><span class="keyword">ResultSet</span> rs = stmt<span class="built_in">.</span>executeQuery(sql);	<span class="comment">//通常发送DQL语句</span></span><br><span class="line">int flag = stmt<span class="built_in">.</span>executeUpdate(sql);	<span class="comment">//通常发送DML语句</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果执行查询，处理结果集<br>查询的结果放在ResultSet对象的一系列行中<br>ResultSet对象的最初位置在行首</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="constant">ResultSet</span>.<span class="keyword">next</span>();	<span class="regexp">//</span>用来在行间移动，返回<span class="literal">true</span>表示有记录，<span class="literal">false</span>表示无记录</span><br><span class="line"><span class="constant">ResultSet</span>.getXXX();	<span class="regexp">//</span>方法用来取得字段的内容</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭连接<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">stmt</span><span class="class">.close</span>();</span><br><span class="line"><span class="tag">conn</span><span class="class">.close</span>();</span><br></pre></td></tr></table></figure><br></p>
+</li>
+</ul>
+<h2 id="二、数据库厂商实现">二、数据库厂商实现</h2><p>Oracle，MySQL等<br><br></p>
+<h2 id="三、连接管理">三、连接管理</h2><p>通过连接工具类获取连接：编写一个访问数据库的工具类，此后所以访问数据库的操作都从工具类中获取连接<br><br></p>
+<p><strong><em>数据配置有两种方式：</em></strong></p>
+<ul>
+<li>直接把数据配置写在工具类中</li>
+<li>把数据库配置写在一个properties属性文件里，工具类读取属性文件，逐行获取数据库参数</li>
+</ul>
+<p>建议采用第二种方式<br><br></p>
+<p><strong><em>db.properties 属性文件,将配置保存为db.properties</em></strong><br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="setting">driverClass=<span class="value">com.oracle.driver.OracleDriver</span></span></span><br><span class="line"><span class="setting">url=<span class="value">xxxx</span></span></span><br><span class="line"><span class="setting">username=<span class="value">xxx</span></span></span><br><span class="line"><span class="setting">password=<span class="value">xxx</span></span></span><br></pre></td></tr></table></figure><br></p>
+<p><strong><em>加载连接信息</em></strong><br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//静态块在加载类时执行一次</span></span><br><span class="line">static &#123;</span><br><span class="line">     <span class="comment">//Properties是一个特殊的散列表（key和value都是String），读取速度快</span></span><br><span class="line">     Properties <span class="keyword">prop</span> = new Properties();</span><br><span class="line">     <span class="comment">//使用ClassLoader读取类路径（classpath/src）下的文件，得到一个输入流</span></span><br><span class="line">     InputStream inStream = DBUtil.<span class="keyword">class</span>.getClassLoader().getResourceAsStream(<span class="string">"db.properties"</span>);</span><br><span class="line">     try &#123;</span><br><span class="line">    	<span class="comment">//从流中读取数据</span></span><br><span class="line">     	<span class="keyword">prop</span>.load(inStream);</span><br><span class="line">     	driverClass = <span class="keyword">prop</span>.getProperty(<span class="string">"driverClass"</span>);</span><br><span class="line">     	url = <span class="keyword">prop</span>.getProperty(<span class="string">"url"</span>);</span><br><span class="line">     	username = <span class="keyword">prop</span>.getProperty(<span class="string">"username"</span>);</span><br><span class="line">     	password = <span class="keyword">prop</span>.getProperty(<span class="string">"password"</span>);</span><br><span class="line">     	<span class="comment">//加载驱动</span></span><br><span class="line">     	<span class="keyword">Class</span>.forName(driverClass);</span><br><span class="line">     &#125; catch(<span class="keyword">e</span>) &#123;</span><br><span class="line">      	<span class="keyword">e</span>.printException();</span><br><span class="line">      	throw new RuntimeException();</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br></p>
+<p><strong><em>设计方法的思路：</em></strong><br>1.返回值类型<br>确定是否有运算结果，确定结果的类型<br>2.方法的参数列表<br>运算中是否有未知的数据参与<br><br></p>
+<p><strong><em>openConn() 方法</em></strong><br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function">Connection <span class="title">openConn</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     Connection conn = <span class="keyword">null</span>;</span><br><span class="line">     <span class="keyword">try</span> &#123;</span><br><span class="line">         conn = DriverManager.getConnection(url, username, password);</span><br><span class="line">     &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">          e.printException();</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">return</span> conn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br></p>
+<p><strong><em>closeConn() 方法</em></strong><br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">void</span> <span class="title">closeConn</span><span class="params">(Connection conn)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">          <span class="keyword">try</span> &#123;</span><br><span class="line">              conn.close();</span><br><span class="line">          &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">               e.printException();</span><br><span class="line">          &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br></p>
+<p><strong><em>JUnit测试类，需要导入Unit.jar</em></strong><br>JUnit测试方法有如下要求，才能直接执行：<br>1.public<br>2.无返回值<br>3.无参数<br>4.方法前加@Test</p>
+<p>通过// TODO xxxx 记录待办事项，可以在Tasks中查看<br><br></p>
+<h2 id="四、连接池技术">四、连接池技术</h2><p>使用DriverManager创建连接，适合在单线程场景下使用。多线程时，即多人访问数据库时，DriverManager并没有加以限制，一旦访问的人数超过上限，则数据库瘫痪，由此产生一个解决方案：数据库连接池。连接池可以帮助我们管理多线程下的连接，避免数据库瘫痪。<br><br></p>
+<p><strong><em>连接池中连接的释放与使用原则：</em></strong></p>
+<ul>
+<li>应用启动时，创建初始化数目的连接</li>
+<li>当申请时无连接可用或者达到指定的最小连接数，按增量参数值创建新的连接</li>
+<li>动态检查：定时检查连接池，一旦发现数量小于最小连接数，则补充相应的新连接，保证连接池正常运转</li>
+<li>静态检查：空闲连接不足时，系统才检测是否达到最小连接数</li>
+<li>按需分配，用过归还，空闲超时释放，获取超时报错</li>
+</ul>
+<p>连接池也只是接口，具体实现由厂商完成<br><br></p>
+<p><strong><em>常用的连接池：</em></strong></p>
+<ul>
+<li>Apache DBCP连接池，Tomcat使用的连接池组件</li>
+<li>C3P0<br>连接池都实现了DataSource接口，不同的连接池实现类不同，设置的参数名不同，但是不同连接池的方法是相同的。<br><br></li>
+</ul>
+<p><strong><em>通过DataSource获取连接</em></strong><br><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">private BasicDataSource dataSource = new BasicDataSource()<span class="comment">;</span></span><br><span class="line">dataSource.setDriverClassName(driverClass)<span class="comment">;</span></span><br><span class="line">dataSource.setUrl(url)<span class="comment">;</span></span><br><span class="line">dataSource.setUsername(username)<span class="comment">;</span></span><br><span class="line">dataSource.setPassword(password)<span class="comment">;</span></span><br></pre></td></tr></table></figure></p>
+<p>常用参数有</p>
+<ul>
+<li>初始连接数</li>
+<li>最大连接数</li>
+<li>最小连接数</li>
+<li>每次增加的连接数</li>
+<li>超时时间</li>
+<li>最大空闲连接</li>
+<li>最小空闲连接</li>
+</ul>
+<p><strong><em>若连接由连接池创建，则关闭连接就是将其归还给连接池，该连接的状态会变成空闲，可以继续复用。<br>连接池创建的连接不是原始的连接，而是它重新封装后的连接。典型的特征就是其执行关闭方法后是归还连接。</em></strong><br><br></p>
+<h2 id="五、异常处理">五、异常处理</h2><p><strong><em>异常的处理方式：</em></strong><br>1.记录异常日志，便于分析解决问题<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">e</span><span class="class">.printStackTrace</span>();</span><br></pre></td></tr></table></figure></p>
+<p>2.能处理则处理，如返回默认值等<br>3.解决不了时抛出给调用者处理<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">""</span>,  e);</span><br></pre></td></tr></table></figure></p>
+</div></article></div></section><footer><div class="paginator"><a href="/2015/12/28/JDBC（二）/" class="prev">上一篇</a><a href="/2015/12/22/数据库基础（五）/" class="next">下一篇</a></div><div data-thread-key="2015/12/24/JDBC（一）/" data-title="JDBC（一）" data-url="http://hellowvirgil.github.io/2015/12/24/JDBC（一）/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+
+</script><div class="copyright"><p>© 2016 <a href="http://hellowvirgil.github.io">Virgil</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>

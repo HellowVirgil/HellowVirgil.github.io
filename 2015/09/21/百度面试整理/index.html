@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 百度面试整理 · VirgilZone</title><meta name="description" content="百度面试整理 - Virgil"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://hellowvirgil.github.io/atom.xml" title="VirgilZone"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/HellowVirgil" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="http://weibo.com/u/3074324883" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="http://www.zhihu.com/people/callmevirgil" target="_blank" class="nav-list-link">ZHIHU</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">百度面试整理</h1><div class="post-info">Sep 21, 2015</div><div class="post-content"><p>很晚才接到一面的电话通知，差点以为我挂了。不得不说，百度的HR是我迄今为止遇到最好的HR，不厌其烦的给我打电话，倘若拿到百度offer的话，那个HR哥哥是我最应该感谢的人~</p>
+<h2 id="一面">一面</h2><p>一面的问题都比较基础，但有一部分答得不是很好，可能是因为太紧张了 - -</p>
+<blockquote>
+<p>实现一个insertAfter方法</p>
+</blockquote>
+<p>这个这么简单的问题我居然没想到，当时忘了节点的 nexSibling 属性，导致我是用 父级元素的 children 方法查找目标元素的兄弟节点的，效率差的不是一点点，怪不得面试官一直说还有更好的方法。</p>
+<blockquote>
+<p>固定宽高的元素实现水平垂直居中</p>
+</blockquote>
+<p>由于宽高已知<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.parent</span> <span class="rules">&#123; </span><br><span class="line">	<span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>; </span><br><span class="line">&#125;</span> </span><br><span class="line"><span class="class">.child</span> <span class="rules">&#123; </span><br><span class="line">	<span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">300px</span></span></span>; </span><br><span class="line">	<span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100px</span></span></span>;</span><br><span class="line">	<span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">20px</span></span></span>; </span><br><span class="line">	<span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>; </span><br><span class="line">	<span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">50%</span></span></span>; </span><br><span class="line">	<span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">50%</span></span></span>; </span><br><span class="line">	<span class="rule"><span class="attribute">margin</span>:<span class="value"> -<span class="number">70px</span> <span class="number">0</span> <span class="number">0</span> -<span class="number">170px</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>或使用flex</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.parent</span> <span class="rules">&#123;</span><br><span class="line">	<span class="rule"><span class="attribute">display</span>:<span class="value"> flex</span></span>;</span><br><span class="line">	<span class="rule"><span class="attribute">justify-content</span>:<span class="value"> center</span></span>;</span><br><span class="line">	<span class="rule"><span class="attribute">align-items</span>:<span class="value"> center</span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>浏览器事件模型</p>
+</blockquote>
+<p>原始事件模型（onclick），IE事件模型（atachEvent），DOM2事件模型（addEventListener）。后面聊到了事件冒泡，事件捕获和事件代理。</p>
+<blockquote>
+<p>原生实现 jsonp ， calback函数如何调用的？</p>
+</blockquote>
+<p>创建一个 script 标签， src 属性设置为目标 url ，服务器接收到请求后返回一个 callback 函数字符串，浏览器解析后是一个函数调用表达式，参数为服务器返回的信息，调用后移除 script 标签。</p>
+<blockquote>
+<p>有哪些块级元素？</p>
+</blockquote>
+<p>当时回答了 div , ul , ol , dl , p , form 。</p>
+<blockquote>
+<p>处理 url ，取出query</p>
+</blockquote>
+<p>通过字符串的split方法</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="keyword">query</span> = document.URL.<span class="keyword">split</span>('?');</span><br><span class="line"><span class="keyword">var</span> key = <span class="keyword">query</span>[<span class="keyword">query</span>.length - 1].<span class="keyword">split</span>('&amp;');</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>实现一个排序算法</p>
+</blockquote>
+<p>冒泡，快排，直接插入排序都可以</p>
+<blockquote>
+<p>js 实现私有属性和方法</p>
+</blockquote>
+<p>通过闭包实现</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">A</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> <span class="keyword">private</span> = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">    	add: <span class="function"><span class="keyword">function</span><span class="params">(n)</span> </span>&#123;</span><br><span class="line">    		<span class="keyword">private</span>+=n;</span><br><span class="line">    		<span class="keyword">return</span> <span class="keyword">private</span>;</span><br><span class="line">    	&#125;,</span><br><span class="line">    	<span class="keyword">get</span>: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    		<span class="keyword">return</span> <span class="keyword">private</span>;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="二面">二面</h2><blockquote>
+<p>两栏布局</p>
+</blockquote>
+<p>非常规两栏布局</p>
+<blockquote>
+<p>性能优化</p>
+</blockquote>
+<p>前面提到过，回答这个问题已经很熟练了。</p>
+<blockquote>
+<p>实现鼠标拖拽元素</p>
+</blockquote>
+<p>mousedown 和 mousemove事件一起使用， clienX ， clientY ， offsetWidth ， offsetHeight 等属性的使用，注意移除事件。</p>
+<blockquote>
+<p>实现无刷新上传文件</p>
+</blockquote>
+<p>这个当时没答上。</p>
+<blockquote>
+<p>浏览器从输入 url 到页面渲染出来发生了什么？</p>
+</blockquote>
+<p>经典问题，我主要从域名解析， TCP ， Http ，浏览器渲染等几个方面说了下。</p>
+<blockquote>
+<p>有哪些节点类型？</p>
+</blockquote>
+<p>文档节点，元素节点，属性节点，注释节点等。</p>
+<blockquote>
+<p>代码实现输入一个数 n ，生成所有 n 位二进制数</p>
+</blockquote>
+<p>原理是遍历 0 至 n-1，然后通过 toString 方法转换为二进制数，最后为不足 n 位的数补零。</p>
+<h2 id="三面">三面</h2><blockquote>
+<p>在阿里做了些什么</p>
+<p>做过什么组件么？</p>
+<p>自己的优缺点？</p>
+<p>未来三年的打算</p>
+</blockquote>
+<p>这些问题因人而异了，结合自己的情况谈就好，说了很多在阿里的实习经验。</p>
+</div></article></div></section><footer><div class="paginator"><a href="/2015/12/17/数据库基础（一）/" class="prev">上一篇</a><a href="/2015/09/10/蘑菇街面试整理/" class="next">下一篇</a></div><div data-thread-key="2015/09/21/百度面试整理/" data-title="百度面试整理" data-url="http://hellowvirgil.github.io/2015/09/21/百度面试整理/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+
+</script><div class="copyright"><p>© 2016 <a href="http://hellowvirgil.github.io">Virgil</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>

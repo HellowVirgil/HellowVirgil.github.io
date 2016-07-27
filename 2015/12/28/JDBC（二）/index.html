@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> JDBC（二） · VirgilZone</title><meta name="description" content="JDBC（二） - Virgil"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://hellowvirgil.github.io/atom.xml" title="VirgilZone"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/HellowVirgil" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="http://weibo.com/u/3074324883" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="http://www.zhihu.com/people/callmevirgil" target="_blank" class="nav-list-link">ZHIHU</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">JDBC（二）</h1><div class="post-info">Dec 28, 2015</div><div class="post-content"><h2 id="一、PreparedStatement">一、PreparedStatement</h2><p>PreparedStatement原理</p>
+<ul>
+<li>Statement主要用于执行静态SQL语句，即内容固定不变的SQL语句</li>
+<li>Statement每执行一次都要对传入的SQL语句编译一次，效率较差</li>
+<li>某些情况下，SQL语句只是其中的参数有所不同，其余子句完全相同，适用于PreparedStatement</li>
+<li>预防SQL注入攻击<br><br></li>
+</ul>
+<p><strong><em>PreparedStatement 接口继承自Statement，execute、executeQuery、executeUpdate方法已重写，不再需要参数。PreparedStatement实例包含已事先编译的SQL语句，SQL语句的IN参数使用『？』占位。</em></strong><br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">PreparedStatement</span> <span class="type">stmt</span> = conn.prepareStatement(<span class="string">"UPDATE amp SET job = ? WHERE empno = ?"</span>);</span><br><span class="line"><span class="type">stmt</span>.setLong(<span class="number">1</span>,<span class="string">"Manger"</span>);</span><br><span class="line"><span class="type">stmt</span>.setInt(<span class="number">2</span>,<span class="number">1001</span>);</span><br><span class="line"><span class="type">stmt</span>.executeUpdate();</span><br></pre></td></tr></table></figure><br></p>
+<p>由于数据库具有缓存功能，可以对statement的执行计划进行缓存，以免重复解析。但是如果每次执行SQL，条件都不同，则DB每次都会创建新计划，缓存并没有起到作用，但是PrepareStatement每次执行内容都用占位符占位，所以PrepareStatement可以利用缓存，提升性能。<br><br></p>
+<p>SQL Injection只对Statement有效，对PreparedStatement无效，因为PreparedStatement不允许在插入参数时改变SQL语句的逻辑结构</p>
+<h2 id="二、ResultSetMetaData">二、ResultSetMetaData</h2><p>ResultSetMetaData 数据结果集的元数据，对结果集进行描述的数据，只有返回ResulSet时才有这个元数据<br><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ResultSetMetaData rsm = rs.getMetaData()<span class="comment">;</span></span><br><span class="line"><span class="built_in">int</span> columnCount = rsm.getColumnCount()<span class="comment">;</span></span><br><span class="line"><span class="built_in">String</span> columnName = <span class="literal">null</span><span class="comment">;</span></span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span><span class="comment">;i &lt;= columnCount;i++) &#123;</span></span><br><span class="line">     columnName = rsm.getColumnName(i)<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br></p>
+<h2 id="三、可滚动的结果集">三、可滚动的结果集</h2><p>创建可滚动的结果集<br><figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Statement</span> stmt = conn.createStatement(<span class="typedef"><span class="keyword">type</span>,concurrency);</span></span><br></pre></td></tr></table></figure></p>
+<p>或<br><figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">PreparedStatement</span> stmt = conn.prepareStatement(sql,<span class="typedef"><span class="keyword">type</span>,concurrency);</span></span><br></pre></td></tr></table></figure><br></p>
+<p>type取值</p>
+<ul>
+<li>TYPE_FORARD_ONLY 只能向前移动，默认参数</li>
+<li>TYPE_SCROLL_INSENSITIVE 可滚动，不感知数据变化</li>
+<li>TYPE_SCROLL_SENSITIVE 可滚动，感知数据变化<br><br></li>
+</ul>
+<p>concurrency取值</p>
+<ul>
+<li>CONCUR_READ_ONLY 只读</li>
+<li>CONCUR_UPDATABLE 可更新<br><br></li>
+</ul>
+<p>可滚动集的常用方法</p>
+<ul>
+<li>first</li>
+<li>last</li>
+<li>beforeFirst</li>
+<li>afterLast</li>
+<li>isFirst</li>
+<li>isLast</li>
+<li>isBeforeFirst</li>
+<li>isAfterLast</li>
+<li>relative</li>
+<li>next</li>
+<li>previous</li>
+<li>absolute</li>
+</ul>
+</div></article></div></section><footer><div class="paginator"><a href="/2015/12/29/JDBC（三）/" class="prev">上一篇</a><a href="/2015/12/24/JDBC（一）/" class="next">下一篇</a></div><div data-thread-key="2015/12/28/JDBC（二）/" data-title="JDBC（二）" data-url="http://hellowvirgil.github.io/2015/12/28/JDBC（二）/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+
+</script><div class="copyright"><p>© 2016 <a href="http://hellowvirgil.github.io">Virgil</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>
