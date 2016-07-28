@@ -5,10 +5,10 @@
 <p>JDBC分为两部分：<br>A.接口(1) 由SUN公司统一提出<br>B.实现类(n) 也叫驱动，由数据库厂商实现<br>注意：</p>
 <ul>
 <li>只需要学习一套接口</li>
-<li>使用时要导入相应的驱动</li>
-</ul>
+<li><p>使用时要导入相应的驱动</p>
+<a id="more"></a>
 <p><strong><em>JDBC工作过程：</em></strong></p>
-<ul>
+</li>
 <li><p>加载驱动</p>
 <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//执行这个类的静态块，而该类的静态块中自行实现了注册的功能</span></span><br><span class="line"><span class="keyword">Class</span>.forName(<span class="string">"oracle.jdbc.OracleDriver"</span>);</span><br></pre></td></tr></table></figure>
 </li>

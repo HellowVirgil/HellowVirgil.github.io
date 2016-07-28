@@ -3,7 +3,7 @@
 </code></pre><p>每个英文字符占用一个字节，每个中文按编码不同，占用2-4个字节</p>
 <pre><code>- GBK 占用<span class="number">2</span>个字节
 - utf-<span class="number">8</span> 占用<span class="number">3</span>个字节
-</code></pre><p><br></p>
+</code></pre><p><br><br><a id="more"></a></p>
 <h2 id="二、CHAR_和_VARCHAR_的最大长度">二、CHAR 和 VARCHAR 的最大长度</h2><p>CHAR 默认长度为1，即  name CHAR 相当于 name CHAR（1），但 VARCHAR 长度不可省略<br><br></p>
 <h2 id="三、LONG_和_CLOB_类型">三、LONG 和 CLOB 类型</h2><p>LONG—VARCHAR的加长版，存储变长字符串，最多到达2GB的字符串数据</p>
 <p>LONG有诸多存储限制:每个表只能有一个LONG类型列；不能作为主键；不能建立索引；不能出现在查询条件中…<br>CLOB：存储定长或变长字符串，最多达4GB的字符串数据</p>
