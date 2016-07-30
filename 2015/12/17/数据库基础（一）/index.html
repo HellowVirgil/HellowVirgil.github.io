@@ -2,8 +2,9 @@
 <p>没有使用数据库之前，通过文件保存的缺陷？</p>
 </blockquote>
 <p>缺乏对数据的整体管理，数据不变修改；不利于数据分析和共享；数据量急剧增长，不利于持久保存。</p>
-<p>DB — 按照特定数据结构组织、存储、管理数据的数据库<br>DBMS — 数据库管理系统<br><a id="more"></a><br>表由行和列组成。<br>列 — 字段<br>行 — 记录</p>
-<p>数据库分为关系型数据库和非关系型数据库<br>数据库本身不区分大小写<br><br></p>
+<p>DB — 按照特定数据结构组织、存储、管理数据的数据库<br>DBMS — 数据库管理系统</p>
+<p>表由行和列组成。<br>列 — 字段<br>行 — 记录</p>
+<p>数据库分为关系型数据库和非关系型数据库<br>数据库本身不区分大小写<br><a id="more"></a></p>
 <h2 id="二、SQL">二、SQL</h2><p><strong><em>SQL（strutted query language，结构化查询语言）可分为：</em></strong></p>
 <ul>
 <li>DDL 数据库定义语言，用于建立、修改、删除数据库对象</li>
@@ -13,51 +14,49 @@
 <li>DCL 数据控制语言，用于执行权限的授予和收回工</li>
 </ul>
 <p>在数据库中， SQL 语句本省是不区分大小写的，但是为了增加可读性，通常会将关键字与非关键字按照大小写区分开。</p>
-<p>在 SQL Developer 中，当需要连续执行多条 SQL 语句时，每条语句可以在结尾使用『;』来分割多条语句，这样他们是可以同时执行的，但是『;』不是 SQL 本身所需要的东西。也可以选中某条 SQL ，单独执行。<br><br></p>
-<h2 id="三、数据类型（Oracle）">三、数据类型（Oracle）</h2><p><strong><em>NUMBER（P，S）表示数字类型，ORACLE中所有的数字都是用NUMBER类型表示</em></strong></p>
-<ul>
-<li>P表示数字的总位数</li>
-<li>S表示小数点后面的位数<br>若省略S值则表示一个整数，P包含S<br>例如，id NUMBER（6，2）表示整数占四位，小数占两位，最大取值为9999.99<br><br></li>
-</ul>
+<p>在 SQL Developer 中，当需要连续执行多条 SQL 语句时，每条语句可以在结尾使用『;』来分割多条语句，这样他们是可以同时执行的，但是『;』不是 SQL 本身所需要的东西。也可以选中某条 SQL ，单独执行。</p>
+<h2 id="三、数据类型（Oracle）">三、数据类型（Oracle）</h2><p><strong><em>NUMBER（P，S）表示数字类型，ORACLE中所有的数字都是用NUMBER类型表示</em></strong><br>P表示数字的总位数S表示小数点后面的位数</p>
+<p>若省略S值则表示一个整数，P包含S<br>例如，id NUMBER（6，2）表示整数占四位，小数占两位，最大取值为9999.99</p>
 <p><strong><em>CHAR（N），表示固定长度的字符类型</em></strong></p>
-<ul>
-<li>N 表示占用的字节数,最大长度是2000字节<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">name</span> <span class="built_in">CHAR</span>（<span class="number">20</span>）</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>表示最多可存储20个字节的字符串，占用空间固定，无论实际数据多长都会补充若干空格直到达到实际指定长度。<br>优点：查询效率好<br>缺点：浪费磁盘空间<br><br></p>
+<blockquote>
+<p>N 表示占用的字节数,最大长度是2000字节</p>
+</blockquote>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">name</span> <span class="built_in">CHAR</span>（<span class="number">20</span>）</span><br></pre></td></tr></table></figure>
+<p>表示最多可存储20个字节的字符串，占用空间固定，无论实际数据多长都会补充若干空格直到达到实际指定长度。<br>优点：查询效率好<br>缺点：浪费磁盘空间</p>
 <p><strong><em>VARCHAR（N），VARCHAR2（N），VARCHAR2 为 ORACLE 独有，均表示变长字符串类型</em></strong></p>
-<ul>
-<li>N 表示最多可存储的字节数,最大长度4000字节<br>根据保存的数据长度，占用空间是变化的<br>优点：磁盘空间利用效率高<br>缺点：查询效率低<br><br></li>
-</ul>
-<p><strong><em>DATE，用于定义日期时间的数据</em></strong><br>长度是7个字节，7个字节分别存储世纪，年，月，日，时，分，秒，所以时间的精度最多到秒<br>默认格式DD-MON-RR，例如11-APR-71<br>也可以存储为DD-MON-YYYY格式<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">date</span> <span class="operator">DATE</span></span><br></pre></td></tr></table></figure></p>
-<p>表示date列中存放的是日期数据<br><br></p>
+<blockquote>
+<p>N 表示最多可存储的字节数,最大长度4000字节</p>
+</blockquote>
+<p>根据保存的数据长度，占用空间是变化的<br>优点：磁盘空间利用效率高<br>缺点：查询效率低</p>
+<p><strong><em>DATE，用于定义日期时间的数据</em></strong></p>
+<blockquote>
+<p>长度是7个字节，7个字节分别存储世纪，年，月，日，时，分，秒，所以时间的精度最多到秒</p>
+</blockquote>
+<p>默认格式DD-MON-RR，例如11-APR-71，也可以存储为DD-MON-YYYY格式<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">date</span> <span class="operator">DATE</span></span><br></pre></td></tr></table></figure></p>
+<p>表示date列中存放的是日期数据</p>
 <h2 id="四、DDL语句">四、DDL语句</h2><p><strong><em>1.CREATE 新建表</em></strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [<span class="keyword">schema</span>.]table_name(</span><br><span class="line">     column_name datatype[<span class="keyword">DEFAULT</span> expr][,..]</span><br><span class="line">);</span></span><br></pre></td></tr></table></figure></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> student(</span><br><span class="line">     <span class="keyword">name</span> VARCHAR2(<span class="number">20</span>),</span><br><span class="line">     gender <span class="built_in">CHAR</span>(<span class="number">1</span>)</span><br><span class="line">);</span></span><br></pre></td></tr></table></figure>
-<p><br></p>
-<p><strong><em>2.DROP 删除表</em></strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> table_name;</span></span><br></pre></td></tr></table></figure><br></p>
-<p><strong><em>3.DESC 查看表结构</em></strong><br><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DESC table_name<span class="comment">;</span></span><br></pre></td></tr></table></figure><br></p>
+<p><strong><em>2.DROP 删除表</em></strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> table_name;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong><em>3.DESC 查看表结构</em></strong><br><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DESC table_name<span class="comment">;</span></span><br></pre></td></tr></table></figure></p>
 <p><strong><em>4.DEFAULT 关键字给列指定默认值，不指定时所有数据类型默认值均为 NULL</em></strong><br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gender <span class="function"><span class="title">CHAR</span><span class="params">(<span class="number">1</span>)</span></span> DEFAULT <span class="string">'M'</span></span><br></pre></td></tr></table></figure></p>
-<p>字符串内容是区分大小写的<br><br></p>
-<p><strong><em>5.NOT NULL 关键字是一种约束条件，用于确保字段的值不为空</em></strong><br>默认情况下，任何列都允许有空值，当某个字段使用NOT NULL修饰后，任何情况下该字段都不能为空<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name <span class="function"><span class="title">VARCHAR2</span><span class="params">(<span class="number">20</span>)</span></span> NOT NULL</span><br></pre></td></tr></table></figure><br></p>
+<p>字符串内容是区分大小写的</p>
+<p><strong><em>5.NOT NULL 关键字是一种约束条件，用于确保字段的值不为空</em></strong><br>默认情况下，任何列都允许有空值，当某个字段使用NOT NULL修饰后，任何情况下该字段都不能为空<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name <span class="function"><span class="title">VARCHAR2</span><span class="params">(<span class="number">20</span>)</span></span> NOT NULL</span><br></pre></td></tr></table></figure></p>
 <p><strong><em>6.RENAME 修改表名</em></strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">RENAME</span> old_name <span class="keyword">TO</span> new_name;</span></span><br></pre></td></tr></table></figure></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">RENAME</span> student <span class="keyword">TO</span> teacher</span></span><br></pre></td></tr></table></figure>
-<p><br></p>
 <p><strong><em>7.ALTER 修改表结构</em></strong><br>(1)给表添加列可以使用 ALTER TABLE 的ADD字句实现，向表中添加字段只能追加到表的最后，不能在表中间添加新的字段<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student <span class="keyword">ADD</span>(</span><br><span class="line">     age <span class="built_in">NUMBER</span>(<span class="number">3</span>)</span><br><span class="line">)</span></span><br></pre></td></tr></table></figure></p>
 <p>(2)使用ALTER TABLE 的DROP字句删除列<br>当表中有数据时，会将删除的字段在每条记录对应的值都删除，若表中数据量大时会耗时<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student <span class="keyword">DROP</span>(</span><br><span class="line">     <span class="keyword">name</span> VARCHAR2(<span class="number">20</span>)</span><br><span class="line">)</span></span><br></pre></td></tr></table></figure></p>
-<p>(3)使用 MODIFY 子句可以改变表中列的数据、长度和默认值<br>修改仅对以后插入的数据有效<br>如果把长度由大改小，有可能不成功<br>建议在表中没有数据时进行，尽量不要修改类型，若修改长度，尽量不要缩小<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student <span class="keyword">MODIFY</span>(</span><br><span class="line">     age <span class="built_in">NUMBER</span>(<span class="number">3</span>) <span class="keyword">DEFAULT</span> <span class="number">0</span></span><br><span class="line">);</span></span><br></pre></td></tr></table></figure><br></p>
-<p><strong><em>8.TRUNATE 清空表数据</em></strong><br>立即生效，无法回退<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> table_name</span></span><br></pre></td></tr></table></figure><br></p>
+<p>(3)使用 MODIFY 子句可以改变表中列的数据、长度和默认值<br>修改仅对以后插入的数据有效<br>如果把长度由大改小，有可能不成功<br>建议在表中没有数据时进行，尽量不要修改类型，若修改长度，尽量不要缩小<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student <span class="keyword">MODIFY</span>(</span><br><span class="line">     age <span class="built_in">NUMBER</span>(<span class="number">3</span>) <span class="keyword">DEFAULT</span> <span class="number">0</span></span><br><span class="line">);</span></span><br></pre></td></tr></table></figure></p>
+<p><strong><em>8.TRUNATE 清空表数据</em></strong><br>立即生效，无法回退<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> table_name</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="五、DML_语句">五、DML 语句</h2><p><strong><em>INSERT 添加数据</em></strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table_name [(col1,col2)] <span class="keyword">VALUES</span> (val1,val2)</span></span><br></pre></td></tr></table></figure></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> student (<span class="keyword">id</span>,<span class="keyword">name</span>,<span class="built_in">date</span>) <span class="keyword">VALUES</span> (<span class="number">1002</span>,<span class="string">'张三'</span>,<span class="string">'01-SEP-03'</span>);</span></span><br><span class="line"><span class="operator"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> student (<span class="keyword">id</span>,<span class="keyword">name</span>,<span class="built_in">date</span>) <span class="keyword">VALUES</span> (<span class="number">1002</span>,<span class="string">'张三'</span>,<span class="keyword">TO_DATE</span>(<span class="string">'2009-09-01'</span>,<span class="string">'YYYY-MM-DD'</span>));</span></span><br></pre></td></tr></table></figure>
-<p><br></p>
 <p><strong><em>UPDATE 修改表中记录中指定字段的值</em></strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">UPDATE</span> table_name <span class="keyword">SET</span> col1=new_val1，col2=new_val2… [<span class="keyword">WHERE</span> condition]</span></span><br></pre></td></tr></table></figure></p>
-<p>UPDATE通常会使用WHERE来限定要修改的记录，否则整张表都会被修改。若使用了WHERE,则只会修改满足条件的记录。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">UPDATE</span> student <span class="keyword">SET</span> <span class="keyword">name</span>=<span class="string">'李四'</span> <span class="keyword">WHERE</span> <span class="keyword">id</span>=<span class="number">3</span></span></span><br></pre></td></tr></table></figure><br></p>
+<p>UPDATE通常会使用WHERE来限定要修改的记录，否则整张表都会被修改。若使用了WHERE,则只会修改满足条件的记录。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">UPDATE</span> student <span class="keyword">SET</span> <span class="keyword">name</span>=<span class="string">'李四'</span> <span class="keyword">WHERE</span> <span class="keyword">id</span>=<span class="number">3</span></span></span><br></pre></td></tr></table></figure></p>
 <p><strong><em>DELETE 删除数据</em></strong><br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DEKETE <span class="keyword">FROM</span> table_name [<span class="keyword">WHERE</span> condition]</span><br></pre></td></tr></table></figure></p>
 <p>若不添加 WHERE 字句会将表中所有是数据删除，等同于清空表操作。添加 WHERE 子句后，只会删除表中满足  WHERE 条件的记录。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> student <span class="keyword">WHERE</span> <span class="keyword">name</span> = <span class="string">'李四'</span></span></span><br></pre></td></tr></table></figure></p>
 <p>如果是删除全部数据，且数据量大，DELETE 语句效率比 TRUNCATE 语句低， DELETE 是逐行删除， TRUNCATE 是直接删除全部数据。但 TRUNCATE 是 DDL 语句，不受事物控制。</p>
 <p><strong><em>DML语句是伴随事物的，操作的数据并没有真的提交到服务器，需要 COMMIT 命令才会提交<br>执行第一条DML语句开始一个新事物，执行TCL语句会做相应处理事物</em></strong></p>
-<p><br></p>
 <h2 id="六、TCL语句">六、TCL语句</h2><p><strong><em>COMMIT 提交事物</em></strong><br><strong><em>ROLLBACK 回退事物</em></strong></p>
-</div></article></div></section><footer><div class="paginator"><a href="/2015/12/18/数据库基础（二）/" class="prev">上一篇</a><a href="/2015/09/21/百度面试整理/" class="next">下一篇</a></div><div data-thread-key="2015/12/17/数据库基础（一）/" data-title="数据库基础（一）" data-url="http://hellowvirgil.github.io/2015/12/17/数据库基础（一）/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+</div></article></div></section><footer><div class="paginator"><a href="/2015/12/18/数据库基础（二）/" class="prev">PREV</a><a href="/2015/09/21/百度面试整理/" class="next">NEXT</a></div><div data-thread-key="2015/12/17/数据库基础（一）/" data-title="数据库基础（一）" data-url="http://hellowvirgil.github.io/2015/12/17/数据库基础（一）/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
 (function() {
     var ds = document.createElement('script');
     ds.type = 'text/javascript';ds.async = true;
