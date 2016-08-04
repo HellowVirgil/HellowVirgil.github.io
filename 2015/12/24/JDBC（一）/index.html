@@ -73,7 +73,7 @@
 <p><strong><em>若连接由连接池创建，则关闭连接就是将其归还给连接池，该连接的状态会变成空闲，可以继续复用。<br>连接池创建的连接不是原始的连接，而是它重新封装后的连接。典型的特征就是其执行关闭方法后是归还连接。</em></strong></p>
 <h2 id="五、异常处理">五、异常处理</h2><p><strong><em>异常的处理方式：</em></strong><br>1.记录异常日志，便于分析解决问题<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">e</span><span class="class">.printStackTrace</span>();</span><br></pre></td></tr></table></figure></p>
 <p>2.能处理则处理，如返回默认值等<br>3.解决不了时抛出给调用者处理<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">""</span>,  e);</span><br></pre></td></tr></table></figure></p>
-</div></article></div></section><footer><div class="paginator"><a href="/2015/12/28/JDBC（二）/" class="prev">PREV</a><a href="/2015/12/22/数据库基础（五）/" class="next">NEXT</a></div><div data-thread-key="2015/12/24/JDBC（一）/" data-title="JDBC（一）" data-url="http://hellowvirgil.github.io/2015/12/24/JDBC（一）/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+</div></article></div></section><footer><div class="paginator"><a href="/2015/12/28/JDBC（二）/" class="prev">上一篇</a><a href="/2015/12/22/数据库基础（五）/" class="next">下一篇</a></div><div data-thread-key="2015/12/24/JDBC（一）/" data-title="JDBC（一）" data-url="http://hellowvirgil.github.io/2015/12/24/JDBC（一）/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
 (function() {
     var ds = document.createElement('script');
     ds.type = 'text/javascript';ds.async = true;
