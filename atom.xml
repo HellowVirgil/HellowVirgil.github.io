@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hellowvirgil.github.io/"/>
-  <updated>2016-08-05T18:44:07.000Z</updated>
+  <updated>2016-11-18T17:40:30.000Z</updated>
   <id>http://hellowvirgil.github.io/</id>
   
   <author>
@@ -14,6 +14,45 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>工作感悟</title>
+    <link href="http://hellowvirgil.github.io/2016/11/19/%E5%B7%A5%E4%BD%9C%E6%84%9F%E6%82%9F/"/>
+    <id>http://hellowvirgil.github.io/2016/11/19/工作感悟/</id>
+    <published>2016-11-18T17:38:01.000Z</published>
+    <updated>2016-11-18T17:40:30.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>经过一段时间的工作，就会发现，工作中遇到的主要难题不是一个需求无法实现，而是在于无法高效率的实现，即注意力无法集中。</p>
+<blockquote>
+<p>注意力不集中又主要体现在：</p>
+</blockquote>
+<ol>
+<li>没有明确的时间规划</li>
+<li>在等待的过程中不知所措</li>
+<li>不知道如何处理自己的个人规划</li>
+</ol>
+<p>像我自己的todo list列了一大堆，但其实完成的很少，尤其是自我驱动的项目，如books to read</p>
+<p>所以，越是自我驱动的项目，越是需要给明一个清楚的deadline。</p>
+<p>后面再新增一本需要阅读的书籍或启动一个项目都会给一个明确的deadline来确保自己不会因为懒惰而使这个项目一直处于todo状态。</p>
+<p>还有一个需要注意的就是，要保持在一些技术社区、开源社区的活跃，希望自己能有一些产出，并在社区能够吸引到关注。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;经过一段时间的工作，就会发现，工作中遇到的主要难题不是一个需求无法实现，而是在于无法高效率的实现，即注意力无法集中。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意力不集中又主要体现在：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;没有明确的时间规划&lt;/li&gt;
+&lt;l
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="http://hellowvirgil.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
   
   <entry>
     <title>一个npm上超级好用的Excel解析工具——xlsx</title>
@@ -1246,60 +1285,6 @@
       <category term="Node.js" scheme="http://hellowvirgil.github.io/tags/Node-js/"/>
     
       <category term="读书笔记" scheme="http://hellowvirgil.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>一个成功的git分支模型（翻译）</title>
-    <link href="http://hellowvirgil.github.io/2015/08/07/%E4%B8%80%E4%B8%AA%E6%88%90%E5%8A%9F%E7%9A%84git%E5%88%86%E6%94%AF%E6%A8%A1%E5%9E%8B%EF%BC%88%E7%BF%BB%E8%AF%91%EF%BC%89/"/>
-    <id>http://hellowvirgil.github.io/2015/08/07/一个成功的git分支模型（翻译）/</id>
-    <published>2015-08-07T04:54:49.000Z</published>
-    <updated>2016-07-28T15:44:34.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>本文翻译自<a href="http://nvie.com/posts/a-successful-git-branching-model/" target="_blank" rel="external">A successful Git branching model</a> by Vincent Driessen</p>
-<p>在这篇文章中，我提出了一个开发模型。大约一年前我介绍过我所有的项目（包括工作上和私人的），经过一年的时间，这个模型已经被证明是非常成功的。我一直想把这些写下来，但直到现在我才有时间来做这些。这篇文章中不会谈论任何项目的细节，只包含对<strong>分支策略</strong>和<strong>发布管理</strong>的探讨。<br><a id="more"></a><br><img src="http://7xiw1x.com1.z0.glb.clouddn.com/git-model@2x.png" alt="git-model"></p>
-<p>它所着重围绕的Git是我们所有源代码的版本控制工具。</p>
-<blockquote>
-<p>为什么是 git ？</p>
-</blockquote>
-<p>在网上我们能看到很多有关于 Git 与集中式代码控制系统之间孰优孰劣的深入讨论，大量的争论在这个问题上产生。然而作为一个开发者，我喜欢Git胜过其他所有代码管理工具。Git 真正地改变了开发者对于合并（merge）还有分支（branch）的理解。就我最初接触的 CVS/Subversion 而言，合并/分支 总是被看做一件很恐怖的事情（“一定要小心合并冲突，出问题了他们会咬人的！”）或每隔一段时间做的事。</p>
-<p>但是 Git 不一样，在 Git 中这些操作非常简洁明了，而且被认为是日常工作流程的核心部分之一。例如，在 CVS/Subversion 的书籍中，分支和合并的内容会在后面的章节讨论（针对高级用户）。然而在每本 Git 教程中，这部分内容已经涵盖在前三章（基础）中了。</p>
-<p>由于它的简单性和复用性，分支和合并再也不是一件值得惧怕的事情。版本控制工具就应该将有助于分支/合并放在首位，它比任何其他事情都重要。</p>
-<p>了解了工具之后，让我们把目光转向开发模型。我在这里想介绍的模型实质上不过是每个团队成员都必须遵循的一组程序，目的是管理软件的开发过程。</p>
-<blockquote>
-<p>分散但集中</p>
-</blockquote>
-<p>我们使用和分支模型运作良好的资源库设置，它有一个“真实的“中心库。值得注意的是，这个库仅仅被看做是中心库（自从 Git 被设计为分布式代码管理系统，技术层面就不存在中心库这个概念）。我们将把这个库称为 origin ，这个名称对于所有 Git 用户来说都很熟悉。</p>
-<p><img src="http://7xiw1x.com1.z0.glb.clouddn.com/centr-decentr@2x.png" alt="centr-decentr"></p>
-<p>每个开发者都从 origin 上发布（push）和同步（pull）。但是除了集中地 push-pull 关系，每个开发者也可能从其他团队成员或子团队中同步改变的代码。举个例子，这可能在两个或多个开发者共同开发一个新的分支的时候有用。在上图中，包含 Alice 和 Bob，Alice 和 David，Clair 和 David 三个子团队。</p>
-<p>从技术上而言，这不过意味着 Alice 定义了一个叫做 Bob  的远程分支，指向 Bob 的仓库，反之亦然。</p>
-<blockquote>
-<p>主要的分支</p>
-</blockquote>
-<p>最为核心的，这个开发模型受到了目前其他模型的极大鼓舞。中心库在无限的生命周期中始终包含两个主要的分支：</p>
-<ul>
-<li>master</li>
-<li>develop</li>
-</ul>
-<p>每一个 Git 的使用者都应该熟悉本地主分支（master branch at origin）。它和主分支是并行的，其他的分支叫做开发分支（develop）。</p>
-<p><img src="http://7xiw1x.com1.z0.glb.clouddn.com/main-branches@2x.png" alt="main-branches"></p>
-<p>我们认为 origin/master 是主要分支是由于 Head 标记的源码总是反应着生产准备状态。</p>
-<p>我们认为 origin/develop 也是主要的分支是由于 HEAD 标记反应着为下一个版本最新提交的开发修改。有些人把这个叫做集成分支。</p>
-<p>当开发分支中的源码趋于稳定并准备发布时，所有的修改都应该和主分支合并，并且以发布版本号进行标记。这里应该如何做将在后面进一步讨论。</p>
-<p>因此，每当有修改要与主分支合并，定义上这都是一个新的版本。我们往往对此非常严格。理论上，每当主分支上有提交时，我们就使用一个 Git 钩子脚本（Git hook script）来完成自动化构建，把软件转出到生产服务器上。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文翻译自&lt;a href=&quot;http://nvie.com/posts/a-successful-git-branching-model/&quot;&gt;A successful Git branching model&lt;/a&gt; by Vincent Driessen&lt;/p&gt;
-&lt;p&gt;在这篇文章中，我提出了一个开发模型。大约一年前我介绍过我所有的项目（包括工作上和私人的），经过一年的时间，这个模型已经被证明是非常成功的。我一直想把这些写下来，但直到现在我才有时间来做这些。这篇文章中不会谈论任何项目的细节，只包含对&lt;strong&gt;分支策略&lt;/strong&gt;和&lt;strong&gt;发布管理&lt;/strong&gt;的探讨。&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="git" scheme="http://hellowvirgil.github.io/tags/git/"/>
-    
-      <category term="译文" scheme="http://hellowvirgil.github.io/tags/%E8%AF%91%E6%96%87/"/>
     
   </entry>
   
