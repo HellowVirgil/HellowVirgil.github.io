@@ -44,6 +44,8 @@
 </blockquote>
 <p>我的解决办法是通过能不能直接访问a.b来判断a是不是一个对象，是对象的话就手动创建一个空数组把他塞进去，来确保格式上的统一。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%if $a.b%&#125;&#10;&#123;%$tmpArray = array()%&#125;&#10;&#123;%$tmpArray = $a%&#125;&#10;&#123;%$a = $tamArray%&#125;&#10;&#123;%/if%&#125;</span><br></pre></td></tr></table></figure>
+<p>发现另外一个解决方案，更优雅一点</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%if !isset($list[0])%&#125;&#10;   &#123;%$list = [$list]%&#125;&#10;&#123;%/if%&#125;</span><br></pre></td></tr></table></figure>
 </div></article></div></section><footer><div class="paginator"><a href="/2016/11/19/工作感悟/" class="next">下一篇</a></div><div data-thread-key="2017/01/08/阿拉丁卡片及SF情景页开发指北/" data-title="阿拉丁卡片及SF情景页开发指北" data-url="http://hellowvirgil.github.io/2017/01/08/阿拉丁卡片及SF情景页开发指北/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
 (function() {
     var ds = document.createElement('script');
