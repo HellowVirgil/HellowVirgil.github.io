@@ -17,7 +17,7 @@
 </blockquote>
 <p>fs.read是POSIX read函数的封装，相比fs.readFile提供了更底层的接口。fs.read的功能是从指定的文件描述符fd中读取数据并写入buffer指向的缓冲区对象。offset是buffer的写入偏移量。length是要从文件中读取的字节数。position是文件读取的起始位置，如果position的值为null，则会从当前文件指针的位置读取，回调函数传递bytesRead和buffer，分别表示读取的字节数和缓冲区对象。</p>
 <p>一般来说，除非必要，否则不要使用这种方式读取文件，因为它要求你手动管理缓冲区和文件指针，尤其是在你不知道文件大小的时候，这将会是一个很麻烦的事情。</p>
-</div></article></div></section><footer><div class="paginator"><a href="/2015/07/28/Node-js中的fs-finder模块/" class="prev">PREV</a><a href="/2015/07/25/JavaScript数据类型/" class="next">NEXT</a></div><div data-thread-key="2015/07/27/Node-js中的fs模块/" data-title="Node.js中的fs模块" data-url="http://hellowvirgil.github.io/2015/07/27/Node-js中的fs模块/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+</div></article></div></section><footer><div class="paginator"><a href="/2015/07/28/Node-js中的fs-finder模块/" class="prev">上一篇</a><a href="/2015/07/25/JavaScript数据类型/" class="next">下一篇</a></div><div data-thread-key="2015/07/27/Node-js中的fs模块/" data-title="Node.js中的fs模块" data-url="http://hellowvirgil.github.io/2015/07/27/Node-js中的fs模块/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
 (function() {
     var ds = document.createElement('script');
     ds.type = 'text/javascript';ds.async = true;
