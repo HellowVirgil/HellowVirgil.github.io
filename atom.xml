@@ -84,76 +84,6 @@
   </entry>
   
   <entry>
-    <title>阿拉丁卡片及SF情景页开发指北</title>
-    <link href="http://hellowvirgil.github.io/2017/01/08/%E9%98%BF%E6%8B%89%E4%B8%81%E5%8D%A1%E7%89%87%E5%8F%8ASF%E6%83%85%E6%99%AF%E9%A1%B5%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97/"/>
-    <id>http://hellowvirgil.github.io/2017/01/08/阿拉丁卡片及SF情景页开发指北/</id>
-    <published>2017-01-08T13:10:09.000Z</published>
-    <updated>2017-02-07T13:47:33.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>第一次开发阿拉丁卡片，坑踩得不少，不过好歹是完成了。在开发中遇到很多问题，尤其坑的一个就是文档很多，真的多！洋洋洒洒几十篇文档，全看完了还不一定能上手，导致前期进度很慢，遇到问题去问别人，又回一句文档里有……当时真是杀人的心都有。不过也算有些收获，吃惊于大搜有一套如此完善的开发流程，环环相扣，流程的繁琐则意味着线上的安全。</p>
-<p>SF文档汇总 <a href="http://superframe.baidu.com/readme.md" target="_blank" rel="external">http://superframe.baidu.com/readme.md</a></p>
-<p>阿拉丁文档汇总 <a href="http://sfe.baidu.com/psdoc.md" target="_blank" rel="external">http://sfe.baidu.com/psdoc.md</a></p>
-<a id="more"></a>
-<p>整个阿拉丁卡片的开发流程如下：</p>
-<ol>
-<li>申请各项权限<ul>
-<li><a href="http://sfe.baidu.com/aladdin/wise/devdocs/code_permission.md" target="_blank" rel="external">http://sfe.baidu.com/aladdin/wise/devdocs/code_permission.md</a> 权限申请</li>
-</ul>
-</li>
-<li>登录模板开发平台进行开发，开发过程中要遵循UI栅格规范、js开发规范、css规范，class命名规范<ul>
-<li><a href="http://sfe.baidu.com/aladdin/tpldev/help.md" target="_blank" rel="external">http://sfe.baidu.com/aladdin/tpldev/help.md</a>  模板平台使用手册</li>
-<li><a href="http://sfe.baidu.com/aladdin/new-reading/gaishu.md" target="_blank" rel="external">http://sfe.baidu.com/aladdin/new-reading/gaishu.md</a>  必读文档</li>
-<li><a href="http://superframe.baidu.com/readme.md#" target="_blank" rel="external">http://superframe.baidu.com/readme.md#</a>  sf文档</li>
-<li><a href="http://pmd.baidu.com/doc/" target="_blank" rel="external">http://pmd.baidu.com/doc/</a> 栅格文档</li>
-<li><a href="http://sfe.baidu.com/aladdin/wise/standard/sigma.md" target="_blank" rel="external">http://sfe.baidu.com/aladdin/wise/standard/sigma.md</a>  sigma文档</li>
-</ul>
-</li>
-<li>开发卡片，情景页选择card ，结果页选择aladin-wise，模板开发过程中要使用base模板预置的一些通用函数，各种js吊起也要遵循相应规范</li>
-<li>模板开发过程中要确定这个模板使用的数据schema，模板数据在站长平台确定字段名称（即XML格式），并要保证提交生效（需要进行数据校验）<ul>
-<li><a href="http://sfe.baidu.com/aladdin/wise/platform/zhanzhangpingtai.md" target="_blank" rel="external">http://sfe.baidu.com/aladdin/wise/platform/zhanzhangpingtai.md</a>  站长平台使用手册</li>
-</ul>
-</li>
-<li>在模板管理平台新建模板，绑定schema及对应的模板，生成模板id<ul>
-<li><a href="pm.open.baidu.com:8001" target="_blank" rel="external">pm.open.baidu.com:8001</a> 模板管理平台</li>
-</ul>
-</li>
-<li>模板开发完成后申请调研机器与后端进行联调</li>
-<li>配置pd.conf，配置新增的group</li>
-<li>绑定资源号和模板<ul>
-<li>结果页卡片需要配置aladdin_all.conf，路径为 <strong><em>/home/work/odp/conf/app/search/aladdin_all.conf</em></strong> </li>
-<li>情景页卡片需要sfcard_all.conf，路径为 <strong><em>/home/work/odp/conf/app/search/sfcard_all.conf</em></strong> </li>
-</ul>
-</li>
-<li>将模板部署至调研环境<ul>
-<li>结果页模板部署路径为 <strong><em>/home/work/odp/template/search/searchaladdin</em></strong></li>
-<li>情景页模板部署路径为 <strong><em>/home/work/odp/template/wise/zh-CN/page/card</em></strong></li>
-</ul>
-</li>
-<li>访问调研环境进行测试（情景页url后加上&amp;cb=json会返回对应的json数据，便于调试）</li>
-</ol>
-<blockquote>
-<p>开发过程中有一个要尤其注意的问题，当XML数据为一个元素时，同步返回的数据通过smarty语法is_array判断仍然是一个数组，然而异步接口返回的数据会是一个对象。对于这种情况，不做特殊处理的话页面结构会乱掉。</p>
-</blockquote>
-<p>我的解决办法是通过能不能直接访问a.b来判断a是不是一个对象，是对象的话就手动创建一个空数组把他塞进去，来确保格式上的统一。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%if $a.b%&#125;&#10;&#123;%$tmpArray = array()%&#125;&#10;&#123;%$tmpArray = $a%&#125;&#10;&#123;%$a = $tamArray%&#125;&#10;&#123;%/if%&#125;</span><br></pre></td></tr></table></figure>
-<p>发现另外一个解决方案，更优雅一点</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%if !isset($list[0])%&#125;&#10;   &#123;%$list = [$list]%&#125;&#10;&#123;%/if%&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;第一次开发阿拉丁卡片，坑踩得不少，不过好歹是完成了。在开发中遇到很多问题，尤其坑的一个就是文档很多，真的多！洋洋洒洒几十篇文档，全看完了还不一定能上手，导致前期进度很慢，遇到问题去问别人，又回一句文档里有……当时真是杀人的心都有。不过也算有些收获，吃惊于大搜有一套如此完善的开发流程，环环相扣，流程的繁琐则意味着线上的安全。&lt;/p&gt;
-&lt;p&gt;SF文档汇总 &lt;a href=&quot;http://superframe.baidu.com/readme.md&quot;&gt;http://superframe.baidu.com/readme.md&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;阿拉丁文档汇总 &lt;a href=&quot;http://sfe.baidu.com/psdoc.md&quot;&gt;http://sfe.baidu.com/psdoc.md&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="阿拉丁" scheme="http://hellowvirgil.github.io/tags/%E9%98%BF%E6%8B%89%E4%B8%81/"/>
-    
-  </entry>
-  
-  <entry>
     <title>工作感悟</title>
     <link href="http://hellowvirgil.github.io/2016/11/19/%E5%B7%A5%E4%BD%9C%E6%84%9F%E6%82%9F/"/>
     <id>http://hellowvirgil.github.io/2016/11/19/工作感悟/</id>
@@ -1362,6 +1292,36 @@
     <summary type="html">
     
       &lt;p&gt;这两天整理了一下js如何实现继承，js是门灵活的语言，实现一种功能往往有多种做法,ECMAScript没有明确的继承机制，而是通过模仿实现的，根据js语言的本身的特性,js实现继承有以下通用的几种方式&lt;br&gt;比如，现在有一个”动物”对象的构造函数。&lt;br&gt;&lt;figure class=&quot;highlight actionscript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.species = &lt;span class=&quot;string&quot;&gt;&quot;动物&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://hellowvirgil.github.io/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一道小题目</title>
+    <link href="http://hellowvirgil.github.io/2015/08/13/%E4%B8%80%E9%81%93%E5%B0%8F%E9%A2%98%E7%9B%AE/"/>
+    <id>http://hellowvirgil.github.io/2015/08/13/一道小题目/</id>
+    <published>2015-08-13T08:13:47.000Z</published>
+    <updated>2016-07-30T01:53:13.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>看书看着看着想到一个小题目，看看有没有最简单的方法？</p>
+<blockquote>
+<p>一个字符串”abcdef”，把偶数个位置的字符变成大写，用JS实现。</p>
+</blockquote>
+<a id="more"></a>
+<p>通过ECMAScript 5数组新增的map方法<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"abcde"</span>;</span><br><span class="line"><span class="keyword">var</span> strUpper = [].map.call(str,<span class="function"><span class="keyword">function</span><span class="params">(elem, index, arr)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (index % <span class="number">2</span> == <span class="number">1</span>)&#123;</span><br><span class="line">  	<span class="keyword">return</span> elem.toUpperCase();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  	<span class="keyword">return</span> elem;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">strUpper.join(<span class="string">''</span>);</span><br></pre></td></tr></table></figure></p>
+<p>又想到一个方法，性能好点，减少了判断奇偶的过程<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">var</span> <span class="keyword">str </span>= <span class="string">"abcde"</span>,</span><br><span class="line">    <span class="keyword">strArray </span>= <span class="keyword">str.split(''),</span><br><span class="line"></span>    <span class="keyword">strLen </span>= <span class="keyword">strArray.length;</span><br><span class="line"></span></span><br><span class="line"><span class="label">for</span>(var i = <span class="number">0</span><span class="comment">; i &lt;  strLen - 1; i++) &#123;</span></span><br><span class="line">   i++<span class="comment">;</span></span><br><span class="line">   <span class="keyword">strArray[i] </span>= <span class="keyword">strArray[i].toUpperCase();</span><br><span class="line"></span>&#125;</span><br><span class="line"><span class="keyword">strArray.join('');</span></span><br></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;看书看着看着想到一个小题目，看看有没有最简单的方法？&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一个字符串”abcdef”，把偶数个位置的字符变成大写，用JS实现。&lt;/p&gt;
+&lt;/blockquote&gt;
     
     </summary>
     
