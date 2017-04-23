@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hellowvirgil.github.io/"/>
-  <updated>2017-02-27T13:46:42.000Z</updated>
+  <updated>2017-04-23T17:20:53.000Z</updated>
   <id>http://hellowvirgil.github.io/</id>
   
   <author>
@@ -14,6 +14,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>URL Query处理函数</title>
+    <link href="http://hellowvirgil.github.io/2017/04/23/URL-Query%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0/"/>
+    <id>http://hellowvirgil.github.io/2017/04/23/URL-Query处理函数/</id>
+    <published>2017-04-23T15:46:29.000Z</published>
+    <updated>2017-04-23T17:20:53.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在日常的开发过程中，经常需要通过url来传递一些参数，因此需要一些处理url query的通用函数。我们通过不同的方式来实现url的更新及删除。<br><a id="more"></a></p>
+<blockquote>
+<p>正则表达式</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteUrlQuery</span>(<span class="params">name, url</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> value = <span class="built_in">encodeURIComponent</span>(value);</span><br><span class="line">  <span class="keyword">var</span> reg = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"(\\?|&amp;)("</span> + name + <span class="string">"=)([^&amp;]*)(&amp;|$)"</span>, <span class="string">"i"</span>);</span><br><span class="line">  <span class="keyword">return</span> url.replace(reg, <span class="function"><span class="keyword">function</span> (<span class="params">$0, $1, param, val, $4</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $<span class="number">1</span>;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line">            </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateUrlQuery</span>(<span class="params">name, value, url</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> value = <span class="built_in">encodeURIComponent</span>(value);</span><br><span class="line">  <span class="keyword">var</span> reg = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"(\\?|&amp;)("</span> + name + <span class="string">"=)([^&amp;]*)(&amp;|$)"</span>, <span class="string">"i"</span>);</span><br><span class="line">  <span class="keyword">var</span> r = url.match(reg);</span><br><span class="line">  <span class="keyword">if</span> (r) &#123;</span><br><span class="line">    url = url.replace(reg, <span class="function"><span class="keyword">function</span> (<span class="params">$0, $1, param, val, $4</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> $<span class="number">1</span> + param + value + $<span class="number">4</span>;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    url += <span class="string">'&amp;'</span> + name + <span class="string">'='</span> + value;</span><br><span class="line">  &#125; </span><br><span class="line">  <span class="keyword">return</span> url;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>将url query转化为对象</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">urlFormat</span>(<span class="params">url</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">  url = url.split(<span class="string">'?'</span>)[<span class="number">1</span>];</span><br><span class="line">  url = url.split(<span class="string">'#'</span>)[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">var</span> strs = url.split(<span class="string">"&amp;"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; strs.length; i ++) &#123;</span><br><span class="line">    o[strs[i].split(<span class="string">"="</span>)[<span class="number">0</span>]]=strs[i].split(<span class="string">"="</span>)[<span class="number">1</span>];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> o;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 更新query</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateUrlQuery</span>(<span class="params">name, value, url</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> queryObject = urlFormat(url);</span><br><span class="line">  <span class="keyword">var</span> origin = url.split(<span class="string">'?'</span>)[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">var</span> hash = url.split(<span class="string">'#'</span>)[<span class="number">1</span>];</span><br><span class="line">  </span><br><span class="line">  queryObject[name] = value;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> searchArray = [];</span><br><span class="line">  <span class="keyword">for</span> (key <span class="keyword">in</span> queryObject) &#123;</span><br><span class="line">    searchArray.push(key + <span class="string">'='</span> + queryObject[key]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> search = <span class="string">'?'</span> + searchArray.join(<span class="string">'&amp;'</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> location = origin + search;</span><br><span class="line">  <span class="keyword">if</span> (hash) &#123;</span><br><span class="line">    location + <span class="string">'#'</span> + hash;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> location;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除query</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteUrlQuery</span>(<span class="params">name, url</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> queryObject = urlFormat(url);</span><br><span class="line">  <span class="keyword">var</span> origin = url.split(<span class="string">'?'</span>)[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">var</span> hash = url.split(<span class="string">'#'</span>)[<span class="number">1</span>];</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">delete</span> queryObject[name];</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> searchArray = [];</span><br><span class="line">  <span class="keyword">for</span> (key <span class="keyword">in</span> queryObject) &#123;</span><br><span class="line">    searchArray.push(key + <span class="string">'='</span> + queryObject[key]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> search = <span class="string">'?'</span> + searchArray.join(<span class="string">'&amp;'</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> location = origin + search;</span><br><span class="line">  <span class="keyword">if</span> (hash) &#123;</span><br><span class="line">    location + <span class="string">'#'</span> + hash;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> location;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在日常的开发过程中，经常需要通过url来传递一些参数，因此需要一些处理url query的通用函数。我们通过不同的方式来实现url的更新及删除。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="函数" scheme="http://hellowvirgil.github.io/tags/%E5%87%BD%E6%95%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>SVG实践</title>
@@ -1292,36 +1321,6 @@
     <summary type="html">
     
       &lt;p&gt;这两天整理了一下js如何实现继承，js是门灵活的语言，实现一种功能往往有多种做法,ECMAScript没有明确的继承机制，而是通过模仿实现的，根据js语言的本身的特性,js实现继承有以下通用的几种方式&lt;br&gt;比如，现在有一个”动物”对象的构造函数。&lt;br&gt;&lt;figure class=&quot;highlight actionscript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.species = &lt;span class=&quot;string&quot;&gt;&quot;动物&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="JavaScript" scheme="http://hellowvirgil.github.io/tags/JavaScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>一道小题目</title>
-    <link href="http://hellowvirgil.github.io/2015/08/13/%E4%B8%80%E9%81%93%E5%B0%8F%E9%A2%98%E7%9B%AE/"/>
-    <id>http://hellowvirgil.github.io/2015/08/13/一道小题目/</id>
-    <published>2015-08-13T08:13:47.000Z</published>
-    <updated>2016-07-30T01:53:13.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>看书看着看着想到一个小题目，看看有没有最简单的方法？</p>
-<blockquote>
-<p>一个字符串”abcdef”，把偶数个位置的字符变成大写，用JS实现。</p>
-</blockquote>
-<a id="more"></a>
-<p>通过ECMAScript 5数组新增的map方法<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"abcde"</span>;</span><br><span class="line"><span class="keyword">var</span> strUpper = [].map.call(str,<span class="function"><span class="keyword">function</span><span class="params">(elem, index, arr)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (index % <span class="number">2</span> == <span class="number">1</span>)&#123;</span><br><span class="line">  	<span class="keyword">return</span> elem.toUpperCase();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  	<span class="keyword">return</span> elem;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">strUpper.join(<span class="string">''</span>);</span><br></pre></td></tr></table></figure></p>
-<p>又想到一个方法，性能好点，减少了判断奇偶的过程<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">var</span> <span class="keyword">str </span>= <span class="string">"abcde"</span>,</span><br><span class="line">    <span class="keyword">strArray </span>= <span class="keyword">str.split(''),</span><br><span class="line"></span>    <span class="keyword">strLen </span>= <span class="keyword">strArray.length;</span><br><span class="line"></span></span><br><span class="line"><span class="label">for</span>(var i = <span class="number">0</span><span class="comment">; i &lt;  strLen - 1; i++) &#123;</span></span><br><span class="line">   i++<span class="comment">;</span></span><br><span class="line">   <span class="keyword">strArray[i] </span>= <span class="keyword">strArray[i].toUpperCase();</span><br><span class="line"></span>&#125;</span><br><span class="line"><span class="keyword">strArray.join('');</span></span><br></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;看书看着看着想到一个小题目，看看有没有最简单的方法？&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;一个字符串”abcdef”，把偶数个位置的字符变成大写，用JS实现。&lt;/p&gt;
-&lt;/blockquote&gt;
     
     </summary>
     
