@@ -15,13 +15,13 @@
 <li><code>touchend</code>: 手机触摸屏幕离开后触发</li>
 <li><code>touchcancel</code>: 当系统停止跟踪触摸的时候触发</li>
 </ul>
-<h2 id="解决办法-1">解决办法</h2><ol>
+<ol>
 <li><p>如果屏幕不考虑滚动的话，可以在<code>touchstart</code>中添加<code>event.preventDefault()</code>，意思是取消了<code>touchstart</code>的默认事件，但是这样做就没有了滚动手机屏幕这个效果，这个适用于局部使用。</p>
 </li>
 <li><p>使用<code>touchcancel</code>事件，在js中同时绑定<code>touchend</code>和<code>touchcancel</code>事件。</p>
 </li>
 </ol>
-</div></article></div></section><footer><div class="paginator"><a href="/2018/08/10/如何使用公司私有 npm 进行前端开发/" class="next">下一篇</a></div><div data-thread-key="2018/08/15/安卓移动端滑动不支持touchend事件bug/" data-title="安卓移动端滑动不支持touchend事件 bug" data-url="http://hellowvirgil.github.io/2018/08/15/安卓移动端滑动不支持touchend事件bug/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+</div></article></div></section><footer><div class="paginator"><a href="/2018/08/21/Android 浏览器文本垂直居中问题/" class="prev">上一篇</a><a href="/2018/08/10/如何使用公司私有 npm 进行前端开发/" class="next">下一篇</a></div><div data-thread-key="2018/08/15/安卓移动端滑动不支持touchend事件bug/" data-title="安卓移动端滑动不支持touchend事件 bug" data-url="http://hellowvirgil.github.io/2018/08/15/安卓移动端滑动不支持touchend事件bug/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
 (function() {
     var ds = document.createElement('script');
     ds.type = 'text/javascript';ds.async = true;

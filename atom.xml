@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hellowvirgil.github.io/"/>
-  <updated>2019-03-06T15:54:38.313Z</updated>
+  <updated>2019-03-06T16:21:34.426Z</updated>
   <id>http://hellowvirgil.github.io/</id>
   
   <author>
@@ -16,11 +16,63 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Android 浏览器文本垂直居中问题</title>
+    <link href="http://hellowvirgil.github.io/2018/08/21/Android%20%E6%B5%8F%E8%A7%88%E5%99%A8%E6%96%87%E6%9C%AC%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E9%97%AE%E9%A2%98/"/>
+    <id>http://hellowvirgil.github.io/2018/08/21/Android 浏览器文本垂直居中问题/</id>
+    <published>2018-08-21T15:17:38.000Z</published>
+    <updated>2019-03-06T16:21:34.426Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>问题描述</p>
+</blockquote>
+<p>在开发中，我们常使用 <code>line-height</code> 属性来实现文本的垂直居中，但是在安卓浏览器渲染中有一个常见的问题，就是对于小于 <code>12px</code> 的字体使用 <code>line-height</code> 属性进行垂直居中的时候，渲染出来的效果并不是文字垂直居中，而是会偏上一些。举两个代码示例如下。</p>
+<h2 id="大于12px">大于12px</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>testtesttest<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">span</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">16px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">background-color</span>:<span class="value"> gray</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">line-height</span>:<span class="value"> <span class="number">16px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">12px</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>显示效果</p>
+<p><img src="http://bos.nj.bpc.baidu.com/v1/agroup/46caf72d32d725417af2ad4d5982de3ec2548037" alt="图片"></p>
+<h2 id="小于12px">小于12px</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>testtesttest<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">span</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">16px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">background-color</span>:<span class="value"> gray</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">line-height</span>:<span class="value"> <span class="number">16px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">10px</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>显示效果</p>
+<p><img src="http://bos.nj.bpc.baidu.com/v1/agroup/458826e90f85ab7bf134f319167dd2c8d1177425" alt="图片"></p>
+<p>可以看到当 <code>font-size</code> 小于 <code>12px</code> 的时候，利用 <code>line-height</code> 属性进行垂直居中布局明显是偏上的，这里为了避免由于 <code>font-size</code> 是奇数带来的偏差，特意把 <code>font-size</code> 都设置成了偶数。</p>
+<blockquote>
+<p>问题原因</p>
+</blockquote>
+<p>起初对这个问题有过两种推测，一是认为是字体的问题，或者是浏览器渲染的问题。但后面发现即使换了字体只要 <code>font-size</code> 还是小于 <code>12px</code> 一样会出现这个问题。</p>
+<blockquote>
+<p>解决办法</p>
+</blockquote>
+<p>看起来问题的根源在于字体大小小于 <code>12px</code>，所以解决问题可以从这个方向入手，要么改变字体大小，要么换个方式让它垂直居中。</p>
+<h2 id="1-_改变字体大小">1. 改变字体大小</h2><p>最直接的方法就是改变字体大小让它大于 <code>12px</code> 能够正常居中，如果页面对字体大小要求比较严格的话，可以先将原来包括 <code>font-size</code> 在内的属性放大两倍，再用 <code>scale</code> 缩小一倍，这样测试之后也是可行的：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"content"</span>&gt;</span>testtesttesttesttest<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.content</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">40px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">background-color</span>:<span class="value"> gray</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">line-height</span>:<span class="value"> <span class="number">40px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">20px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(<span class="number">0.5</span>)</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">transform-origin</span>:<span class="value"> <span class="number">0%</span> <span class="number">0%</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>但不知道为什么，用这种方法之后我总是感觉文字没有绝对地居中，好像是有一点细微的偏下，不知道什么原因，不是 <code>line-height</code> 就是我的眼睛有问题。</p>
+<h2 id="2-_table布局">2. table布局</h2><p>在元素外再包一层，使用表格布局</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"content"</span>&gt;</span>testtesttesttesttest<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.container</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">display</span>:<span class="value"> table</span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"><span class="class">.content</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">background-color</span>:<span class="value"> gray</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">10px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">display</span>:<span class="value"> table-cell</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">vertical-align</span>:<span class="value"> middle</span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>利用 table 布局能够比较好地实现文本垂直居中，缺点是要在外面多包一层容器。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;问题描述&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在开发中，我们常使用 &lt;code&gt;line-height&lt;/code&gt; 属性来实现文本的垂直居中，但是在安卓浏览器渲染中有一个常见的问题，就是对于小于 &lt;code&gt;12px&lt;/code&gt; 的字体使
+    
+    </summary>
+    
+    
+      <category term="移动端开发" scheme="http://hellowvirgil.github.io/tags/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
     <title>安卓移动端滑动不支持touchend事件 bug</title>
     <link href="http://hellowvirgil.github.io/2018/08/15/%E5%AE%89%E5%8D%93%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%BB%91%E5%8A%A8%E4%B8%8D%E6%94%AF%E6%8C%81touchend%E4%BA%8B%E4%BB%B6bug/"/>
     <id>http://hellowvirgil.github.io/2018/08/15/安卓移动端滑动不支持touchend事件bug/</id>
     <published>2018-08-15T14:12:38.000Z</published>
-    <updated>2019-03-06T15:54:38.313Z</updated>
+    <updated>2019-03-06T16:13:50.382Z</updated>
     
     <content type="html"><![CDATA[<h2 id="问题背景">问题背景</h2><p>使用<code>touchstart</code>和<code>touchend</code>实现类似<code>css active</code>按下效果时发现部分安卓手机按下后就一直保持按下状态。</p>
 <h2 id="问题原因">问题原因</h2><blockquote>
@@ -39,7 +91,7 @@
 <li><code>touchend</code>: 手机触摸屏幕离开后触发</li>
 <li><code>touchcancel</code>: 当系统停止跟踪触摸的时候触发</li>
 </ul>
-<h2 id="解决办法-1">解决办法</h2><ol>
+<ol>
 <li><p>如果屏幕不考虑滚动的话，可以在<code>touchstart</code>中添加<code>event.preventDefault()</code>，意思是取消了<code>touchstart</code>的默认事件，但是这样做就没有了滚动手机屏幕这个效果，这个适用于局部使用。</p>
 </li>
 <li><p>使用<code>touchcancel</code>事件，在js中同时绑定<code>touchend</code>和<code>touchcancel</code>事件。</p>
@@ -1138,97 +1190,6 @@
     
     
       <category term="数据库" scheme="http://hellowvirgil.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>百度面试整理</title>
-    <link href="http://hellowvirgil.github.io/2015/09/21/%E7%99%BE%E5%BA%A6%E9%9D%A2%E8%AF%95%E6%95%B4%E7%90%86/"/>
-    <id>http://hellowvirgil.github.io/2015/09/21/百度面试整理/</id>
-    <published>2015-09-21T06:00:45.000Z</published>
-    <updated>2016-07-30T01:32:16.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>很晚才接到一面的电话通知，差点以为我挂了。不得不说，百度的HR是我迄今为止遇到最好的HR，不厌其烦的给我打电话，倘若拿到百度offer的话，那个HR哥哥是我最应该感谢的人~<br><a id="more"></a></p>
-<h2 id="一面">一面</h2><p>一面的问题都比较基础，但有一部分答得不是很好，可能是因为太紧张了 - -</p>
-<blockquote>
-<p>实现一个insertAfter方法</p>
-</blockquote>
-<p>这个这么简单的问题我居然没想到，当时忘了节点的 nexSibling 属性，导致我是用 父级元素的 children 方法查找目标元素的兄弟节点的，效率差的不是一点点，怪不得面试官一直说还有更好的方法。</p>
-<blockquote>
-<p>固定宽高的元素实现水平垂直居中</p>
-</blockquote>
-<p>由于宽高已知<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.parent</span> <span class="rules">&#123; </span><br><span class="line">	<span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>; </span><br><span class="line">&#125;</span> </span><br><span class="line"><span class="class">.child</span> <span class="rules">&#123; </span><br><span class="line">	<span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">300px</span></span></span>; </span><br><span class="line">	<span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100px</span></span></span>;</span><br><span class="line">	<span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">20px</span></span></span>; </span><br><span class="line">	<span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>; </span><br><span class="line">	<span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">50%</span></span></span>; </span><br><span class="line">	<span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">50%</span></span></span>; </span><br><span class="line">	<span class="rule"><span class="attribute">margin</span>:<span class="value"> -<span class="number">70px</span> <span class="number">0</span> <span class="number">0</span> -<span class="number">170px</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure></p>
-<p>或使用flex<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.parent</span> <span class="rules">&#123;</span><br><span class="line">	<span class="rule"><span class="attribute">display</span>:<span class="value"> flex</span></span>;</span><br><span class="line">	<span class="rule"><span class="attribute">justify-content</span>:<span class="value"> center</span></span>;</span><br><span class="line">	<span class="rule"><span class="attribute">align-items</span>:<span class="value"> center</span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>浏览器事件模型</p>
-</blockquote>
-<p>原始事件模型（onclick），IE事件模型（atachEvent），DOM2事件模型（addEventListener）。后面聊到了事件冒泡，事件捕获和事件代理。</p>
-<blockquote>
-<p>原生实现 jsonp ， calback函数如何调用的？</p>
-</blockquote>
-<p>创建一个 script 标签， src 属性设置为目标 url ，服务器接收到请求后返回一个 callback 函数字符串，浏览器解析后是一个函数调用表达式，参数为服务器返回的信息，调用后移除 script 标签。</p>
-<blockquote>
-<p>有哪些块级元素？</p>
-</blockquote>
-<p>当时回答了 div , ul , ol , dl , p , form 。</p>
-<blockquote>
-<p>处理 url ，取出query</p>
-</blockquote>
-<p>通过字符串的split方法</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="keyword">query</span> = document.URL.<span class="keyword">split</span>('?');</span><br><span class="line"><span class="keyword">var</span> key = <span class="keyword">query</span>[<span class="keyword">query</span>.length - 1].<span class="keyword">split</span>('&amp;');</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>实现一个排序算法</p>
-</blockquote>
-<p>冒泡，快排，直接插入排序都可以</p>
-<blockquote>
-<p>js 实现私有属性和方法</p>
-</blockquote>
-<p>通过闭包实现<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">A</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> <span class="keyword">private</span> = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">    	add: <span class="function"><span class="keyword">function</span><span class="params">(n)</span> </span>&#123;</span><br><span class="line">    		<span class="keyword">private</span>+=n;</span><br><span class="line">    		<span class="keyword">return</span> <span class="keyword">private</span>;</span><br><span class="line">    	&#125;,</span><br><span class="line">    	<span class="keyword">get</span>: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    		<span class="keyword">return</span> <span class="keyword">private</span>;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="二面">二面</h2><blockquote>
-<p>两栏布局</p>
-</blockquote>
-<p>非常规两栏布局</p>
-<blockquote>
-<p>性能优化</p>
-</blockquote>
-<p>前面提到过，回答这个问题已经很熟练了。</p>
-<blockquote>
-<p>实现鼠标拖拽元素</p>
-</blockquote>
-<p>mousedown 和 mousemove事件一起使用， clienX ， clientY ， offsetWidth ， offsetHeight 等属性的使用，注意移除事件。</p>
-<blockquote>
-<p>实现无刷新上传文件</p>
-</blockquote>
-<p>这个当时没答上。</p>
-<blockquote>
-<p>浏览器从输入 url 到页面渲染出来发生了什么？</p>
-</blockquote>
-<p>经典问题，我主要从域名解析， TCP ， Http ，浏览器渲染等几个方面说了下。</p>
-<blockquote>
-<p>有哪些节点类型？</p>
-</blockquote>
-<p>文档节点，元素节点，属性节点，注释节点等。</p>
-<blockquote>
-<p>代码实现输入一个数 n ，生成所有 n 位二进制数</p>
-</blockquote>
-<p>原理是遍历 0 至 n-1，然后通过 toString 方法转换为二进制数，最后为不足 n 位的数补零。</p>
-<h2 id="三面">三面</h2><blockquote>
-<p>在阿里做了些什么</p>
-<p>做过什么组件么？</p>
-<p>自己的优缺点？</p>
-<p>未来三年的打算</p>
-</blockquote>
-<p>这些问题因人而异了，结合自己的情况谈就好，说了很多在阿里的实习经验。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;很晚才接到一面的电话通知，差点以为我挂了。不得不说，百度的HR是我迄今为止遇到最好的HR，不厌其烦的给我打电话，倘若拿到百度offer的话，那个HR哥哥是我最应该感谢的人~&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="面经" scheme="http://hellowvirgil.github.io/tags/%E9%9D%A2%E7%BB%8F/"/>
     
   </entry>
   
