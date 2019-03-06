@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hellowvirgil.github.io/"/>
-  <updated>2017-05-19T16:48:48.000Z</updated>
+  <updated>2019-03-06T15:18:56.320Z</updated>
   <id>http://hellowvirgil.github.io/</id>
   
   <author>
@@ -14,6 +14,58 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何使用公司私有 npm 进行前端开发</title>
+    <link href="http://hellowvirgil.github.io/2018/08/10/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%85%AC%E5%8F%B8%E7%A7%81%E6%9C%89%20npm%20%E8%BF%9B%E8%A1%8C%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/"/>
+    <id>http://hellowvirgil.github.io/2018/08/10/如何使用公司私有 npm 进行前端开发/</id>
+    <published>2018-08-10T14:42:38.000Z</published>
+    <updated>2019-03-06T15:18:56.320Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="如何开发一个_npm_包">如何开发一个 npm 包</h2><h3 id="私有_npm_镜像">私有 npm 镜像</h3><p>1.由于公司内部的 npm 包要上传到公司的私有镜像源，所以首先将 npm 的 registry 重新设置</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">set</span> <span class="keyword">registry</span>=<span class="keyword">http</span>://<span class="keyword">registry</span>.npm.baidu-int.com</span><br></pre></td></tr></table></figure>
+<p>2.为了保证能够发布 npm 包，需要有一个 npm 账号</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm adduser --<span class="keyword">registry</span>=<span class="keyword">http</span>://<span class="keyword">registry</span>.npm.baidu-int.com</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="npm_包目录结构">npm 包目录结构</h3><p>一个完整的 npm 包应该由源码、编译后代码、测试用例、文档等组成。</p>
+<p>如下图：</p>
+<p><img src="http://agroup-bos.su.bcebos.com/e5898520d096202ddc34499b2f674a843cda5d0f" alt="图片"></p>
+<p>其中，我们选择使用 ES Module 进行开发，于是选择使用 <code>rollup</code>将代码编译到         <code>cjs</code>,<code>amd</code>等现代浏览器能够支持的模块规范。同时使用 <code>rollup-plugin-babel</code>使我们能够在浏览器不支持的情况下使用箭头函数等新语法。由于 Babel 默认只转换新的 JavaScript 语法，而不转换新的 API。我们再引入 <code>babel-plugin-transform-runtime</code> 插件使我们能够使用 <code>Promise</code> 等新 API。</p>
+<p>针对不同的前端模块化方式，我们分别构建不同的文件。<br><code>/dist.dev.js</code>生成的格式为 <code>umd</code>，能够支持直接 <code>script</code> 标签引入和模块语法引入。<code>/dist.common.js</code>生成的格式为 <code>common js</code>，支持 common js 规范的加载器引用这个，如 <code>Webpack &amp; Browserify</code>。<code>/dist.esm.js</code>生成的格式为 <code>ES Modules</code>，支持 ES Modules 规范的加载器引用这个，如<code>Webpack2+ &amp; rollup</code>。</p>
+<h2 id="发布">发布</h2><p>由于公司的镜像只支持发布 @baidu 这个 scope 的私有包，所以 <code>package.json</code> 需要需改一下，<code>name</code> 需要加上 scope。目前的 scope 只支持 <code>baidu</code>。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "<span class="attribute">name</span>": <span class="value"><span class="string">"@baidu/hades"</span></span>,</span><br><span class="line">  "<span class="attribute">version</span>": <span class="value"><span class="string">"1.0.3"</span></span>,</span><br><span class="line">  "<span class="attribute">description</span>": <span class="value"><span class="string">"hades bridge"</span></span>,</span><br><span class="line">  "<span class="attribute">main</span>": <span class="value"><span class="string">"dist/hades.common.js"</span></span>,</span><br><span class="line">  "<span class="attribute">module</span>": <span class="value"><span class="string">"dist/hades.esm.js"</span></span>,</span><br><span class="line">  "<span class="attribute">directories</span>": <span class="value">&#123;</span><br><span class="line">    "<span class="attribute">doc</span>": <span class="value"><span class="string">"doc"</span></span>,</span><br><span class="line">    "<span class="attribute">example</span>": <span class="value"><span class="string">"example"</span></span>,</span><br><span class="line">    "<span class="attribute">test</span>": <span class="value"><span class="string">"test"</span></span><br><span class="line">  </span>&#125;</span>,</span><br><span class="line">  "<span class="attribute">scripts</span>": <span class="value">&#123;</span><br><span class="line">    "<span class="attribute">build</span>": <span class="value"><span class="string">"rollup --config rollup.config.js --watch"</span></span>,</span><br><span class="line">    "<span class="attribute">test</span>": <span class="value"><span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span></span><br><span class="line">  </span>&#125;</span>,</span><br><span class="line">  "<span class="attribute">repository</span>": <span class="value">&#123;</span><br><span class="line">    "<span class="attribute">type</span>": <span class="value"><span class="string">"git"</span></span>,</span><br><span class="line">    "<span class="attribute">url</span>": <span class="value"><span class="string">"ssh://yangguang23@icode.baidu.com:8235/baidu/edu-toc-fe/npm-hades"</span></span><br><span class="line">  </span>&#125;</span>,</span><br><span class="line">  "<span class="attribute">keywords</span>": <span class="value">[</span><br><span class="line">    <span class="string">"bridge"</span>,</span><br><span class="line">    <span class="string">"wenku"</span>,</span><br><span class="line">    <span class="string">"Hades"</span></span><br><span class="line">  ]</span>,</span><br><span class="line">  "<span class="attribute">author</span>": <span class="value"><span class="string">"yangguang23"</span></span>,</span><br><span class="line">  "<span class="attribute">files</span>": <span class="value">[</span><br><span class="line">	<span class="string">"src"</span>,</span><br><span class="line">    <span class="string">"dist"</span>,</span><br><span class="line">    <span class="string">"types/*.d.ts"</span>,</span><br><span class="line">    <span class="string">"types/*.json"</span></span><br><span class="line">  ]</span>,</span><br><span class="line">  "<span class="attribute">license</span>": <span class="value"><span class="string">"ISC"</span></span>,</span><br><span class="line">  "<span class="attribute">devDependencies</span>": <span class="value">&#123;</span><br><span class="line">    "<span class="attribute">babel-core</span>": <span class="value"><span class="string">"^6.26.3"</span></span>,</span><br><span class="line">    "<span class="attribute">babel-plugin-external-helpers</span>": <span class="value"><span class="string">"^6.22.0"</span></span>,</span><br><span class="line">    "<span class="attribute">babel-plugin-transform-runtime</span>": <span class="value"><span class="string">"^6.23.0"</span></span>,</span><br><span class="line">    "<span class="attribute">babel-preset-env</span>": <span class="value"><span class="string">"^1.6.1"</span></span>,</span><br><span class="line">    "<span class="attribute">rollup</span>": <span class="value"><span class="string">"^0.58.2"</span></span>,</span><br><span class="line">    "<span class="attribute">rollup-plugin-babel</span>": <span class="value"><span class="string">"^3.0.4"</span></span>,</span><br><span class="line">    "<span class="attribute">rollup-plugin-commonjs</span>": <span class="value"><span class="string">"^9.1.0"</span></span>,</span><br><span class="line">    "<span class="attribute">rollup-plugin-node-resolve</span>": <span class="value"><span class="string">"^3.3.0"</span></span>,</span><br><span class="line">    "<span class="attribute">rollup-watch</span>": <span class="value"><span class="string">"^4.3.1"</span></span><br><span class="line">  </span>&#125;</span>,</span><br><span class="line">  "<span class="attribute">dependencies</span>": <span class="value">&#123;</span><br><span class="line">    "<span class="attribute">whatwg-fetch</span>": <span class="value"><span class="string">"^2.0.4"</span></span><br><span class="line">  </span>&#125;</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure></p>
+<p>更新包的话，coding 完了<code>千万不要</code>直接发布，这里我们需要修改 <code>package.json</code>中 的<code>version</code>版本号，但不能直接修改。</p>
+<p>修改之前先说下 npm 维护 package 版本的规则 <code>x.y.z</code>：</p>
+<ol>
+<li>x 表示主版本号,通常有重大改变或者达到里程碑才改变</li>
+<li>y 表示次要版本号,或二级版本号,在保证主体功能基本不变的情况下,如果适当增加了新功能可以更新此版本号</li>
+<li>z 表示尾版本号或者补丁号,一些小范围的修修补补就可以更新补丁号</li>
+</ol>
+<p>对应到 npm 的用法为：<br><figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">version</span> patch <span class="comment">// z++</span></span><br><span class="line">npm <span class="keyword">version</span> minor <span class="comment">// y++ &amp;&amp; z=0</span></span><br><span class="line">npm <span class="keyword">version</span> major <span class="comment">// x+= &amp;&amp; y=0 &amp;&amp; z=0</span></span><br></pre></td></tr></table></figure></p>
+<p>执行 <code>npm version</code> 的会自动生成对应的版本号并更新 <code>package.json</code><br>，同时在配置了 git 仓库的情况下，会自动生成一个 commit，内容为对应的版本号。</p>
+<p>所以，一般更新版本的步骤为：</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br><span class="line">git add .</span><br><span class="line">git commit -m 'xxx'</span><br><span class="line">npm <span class="operator">version</span> patch // 或者 npm <span class="operator">version</span> minor，npm <span class="operator">version</span> major</span><br><span class="line">git push origin HEAD:refs/for/<span class="keyword">master</span></span><br><span class="line"><span class="title">git</span> push origin vx.x.x // npm publish 时会自动生成本地 <span class="operator">tag</span>（<span class="keyword">tag</span> <span class="title">名称为版本号），手动把 tag</span> 发布到远程仓库</span><br><span class="line">npm publish</span><br></pre></td></tr></table></figure>
+<h2 id="如何在YOG2项目里使用_npm">如何在YOG2项目里使用 npm</h2><p>在 YOG2 项目可以直接启用 FIS3 配置来使用 npm：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fis3-enable</span></span><br><span class="line"><span class="tag">fis</span><span class="class">.enableNPM</span>(&#123;</span><br><span class="line">    <span class="attribute">autoPack</span>: true</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>然后在 client 目录下执行</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> install <span class="property">@baidu</span><span class="regexp">/hades --save --registry=http:/</span>/registry.<span class="built_in">npm</span>.baidu-int.com</span><br></pre></td></tr></table></figure>
+<p>这时 client 目录下会新增 <code>package.json</code> 文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "<span class="attribute">name</span>": <span class="value"><span class="string">"test"</span></span>,</span><br><span class="line">  "<span class="attribute">version</span>": <span class="value"><span class="string">"0.0.1"</span></span>,</span><br><span class="line">  "<span class="attribute">description</span>": <span class="value"><span class="string">"test"</span></span>,</span><br><span class="line">  "<span class="attribute">author</span>": <span class="value"><span class="string">"yangguang23"</span></span>,</span><br><span class="line">  "<span class="attribute">private</span>": <span class="value"><span class="literal">true</span></span>,</span><br><span class="line">  "<span class="attribute">scripts</span>": <span class="value">&#123;</span><br><span class="line">    "<span class="attribute">test</span>": <span class="value"><span class="string">""</span></span><br><span class="line">  </span>&#125;</span>,</span><br><span class="line">  "<span class="attribute">dependencies</span>": <span class="value">&#123;</span><br><span class="line">    "<span class="attribute">@baidu/hades</span>": <span class="value"><span class="string">"^1.0.3"</span></span><br><span class="line">  </span>&#125;</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure>
+<p>这样在前端直接使用 <code>require(&#39;@baidu/hades&#39;)</code>就会直接去<code>node_modules</code>里面寻找同名的包了。</p>
+<p>同时，如果启用了 <code>fis3-parser-babel-6.x</code> 插件的话，也可以通过 ESModuels 引入。</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'client</span>/&#123;components,view&#125;/**.js': &#123;</span><br><span class="line">    <span class="keyword">parser</span>: fis.plugin(<span class="symbol">'babel</span>-<span class="number">6.</span>x'),</span><br><span class="line">    isMod: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Hades <span class="keyword">from</span> <span class="string">'@baidu/hades'</span>;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;如何开发一个_npm_包&quot;&gt;如何开发一个 npm 包&lt;/h2&gt;&lt;h3 id=&quot;私有_npm_镜像&quot;&gt;私有 npm 镜像&lt;/h3&gt;&lt;p&gt;1.由于公司内部的 npm 包要上传到公司的私有镜像源，所以首先将 npm 的 registry 重新设置&lt;/p&gt;
+&lt;figure class=&quot;highlight tcl&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;npm &lt;span class=&quot;keyword&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;registry&lt;/span&gt;=&lt;span class=&quot;keyword&quot;&gt;http&lt;/span&gt;://&lt;span class=&quot;keyword&quot;&gt;registry&lt;/span&gt;.npm.baidu-int.com&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;2.为了保证能够发布 npm 包，需要有一个 npm 账号&lt;/p&gt;
+&lt;figure class=&quot;highlight tcl&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;npm adduser --&lt;span class=&quot;keyword&quot;&gt;registry&lt;/span&gt;=&lt;span class=&quot;keyword&quot;&gt;http&lt;/span&gt;://&lt;span class=&quot;keyword&quot;&gt;registry&lt;/span&gt;.npm.baidu-int.com&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>百度是否已经出局？</title>
@@ -1171,150 +1223,6 @@
     
     
       <category term="随笔" scheme="http://hellowvirgil.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>《Web前端安全黑客技术揭秘》读书笔记</title>
-    <link href="http://hellowvirgil.github.io/2015/08/31/%E3%80%8AWeb%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8%E9%BB%91%E5%AE%A2%E6%8A%80%E6%9C%AF%E6%8F%AD%E7%A7%98%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    <id>http://hellowvirgil.github.io/2015/08/31/《Web前端安全黑客技术揭秘》读书笔记/</id>
-    <published>2015-08-31T15:16:34.000Z</published>
-    <updated>2016-07-28T15:41:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>这篇博客详细记录我在阅读本书过程中觉得重要的知识点以及我觉得需要了解的各种前端安全概念。</p>
-<h2 id="第一章_Web安全的关键点">第一章 Web安全的关键点</h2><ol>
-<li>数据与指令</li>
-<li>浏览器同源策略</li>
-<li>信任与信任关系</li>
-<li>社会工程学的作用</li>
-<li>攻防不单一</li>
-<li>场景很重要</li>
-</ol>
-<blockquote>
-<p>浏览器的同源策略：不同域的客户端脚本在没明确授权的情况下，不能读写对方的资源。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="第二章_前端基础">第二章 前端基础</h2><p>1.URL</p>
-<p>格式：&lt;scheme&gt;://&lt;netloc&gt;/&lt;path&gt;?&lt;query&gt;#&lt;fragment&gt;</p>
-<p>例如，<a href="http://www.foo.com/path/f.php?id=1&amp;type=cool#new" target="_blank" rel="external">http://www.foo.com/path/f.php?id=1&amp;type=cool#new</a></p>
-<p>对应关系是：</p>
-<p>&lt;scheme&gt; - http<br>&lt;netloc&gt; - www.foo.com<br>&lt;path&gt; - /path/f.php<br>&lt;query&gt; - id=1&amp;type=cool<br>&lt;fragment&gt; - new</p>
-<blockquote>
-<p>URL编码方式，有三类：escape、encodeURI、encodeURIComponent，对应的解码函数是：unescape、decodeURI、decodeURIComponent。这三个编码函数是有差异的，甚至在自动URI编码中也存在差异。</p>
-</blockquote>
-<p>2.HTTP协议</p>
-<p>URL的请求协议几乎都是 http ，每次请求响应后都会立即断开或延时断开，断开后，下一次连接再重新建立。</p>
-<blockquote>
-<p>通过 Cookies 进行会话跟踪，第一次响应时设置的 Cookies 在随后的每次请求中都会发送出去。Cookies 还可以包括登录认证后的身份信息。</p>
-</blockquote>
-<p>3.JavaScript</p>
-<p>(1)DOM树<br>我们的隐私数据可能存储在以下位置：</p>
-<ul>
-<li>HTML 内容中</li>
-<li>浏览器本地存储中，如 Cookies 等</li>
-<li>URL 地址中</li>
-</ul>
-<p>(2)iframe</p>
-<p>父页与子页之间如何跨文档读写数据？</p>
-<blockquote>
-<p>如果父页和子页之间是同域，父页可以通过调用子页的 contentWindow 来操作子页的 DOM 树，同理，子页可以调用父页的 contentWindow 来操作父页的 DOM 树。如果不同域，则必须严格遵守同源策略，但子页还是可以对父页的 location 值进行写操作，这样可以让父页重定向到其他网页，不过对 location 的操作仅仅只有写权限。</p>
-</blockquote>
-<p>(3)CORS</p>
-<blockquote>
-<p>W3C 的新标准中， CORS（Cross-Origin-Resource Sharing）开始推进浏览器支持这样的跨域方案。发起请求会自动带上 Origin 头，目标域会判断 Origin 值，如果是自己预期的就会返回 Access-Controll-Allow-Origin 头表示同意跨域。IE 下不使用 XMLHttpRequet 对象，而是使用自己的 XDomainRequest 对象。</p>
-</blockquote>
-<p>(4)Cookie 安全</p>
-<p>Cookie的重要字段如下：<br>[name][value][domain][path][expires][httpOnly][secure]</p>
-<ul>
-<li>子域 Cookie 机制<ul>
-<li>设置 Cookie 可以指定 domain 为父级域，好处是可以在不同子域共享 Cookie ，坏处就是攻击者控制的其他子域也能读到这个 Cookie。</li>
-</ul>
-</li>
-<li>路径 Cookie 机制<ul>
-<li>通过跨 iframe 进行 DOM 操作来跨路径读取 Cookie</li>
-</ul>
-</li>
-<li>HttpOnly Cookie 机制<ul>
-<li>仅在 HTTP 层面上传输的 Cookie，当设置了 HttpOnly 标识后，客户端脚本就无法读写该 Cookie。</li>
-</ul>
-</li>
-<li>Secure Cookie 机制<ul>
-<li>设置了 Secure 标识的 Cookie 仅在 HTTPS 上安全传输，如果请求是 HTTP 的，就不会带上这个 Cookie。</li>
-</ul>
-</li>
-<li>本地 Cookie 与内存 Cookie<ul>
-<li>如果没有设置过期时间，这样的 Cookie 会随着浏览器的关闭从内存消失，如果设置为未来的某个时间点，那么这样的 Cookie 就会以文本形式保存在操作系统本地。</li>
-</ul>
-</li>
-<li>Cookie 的 P3P 性质<ul>
-<li>该字段用于标识是否允许目标网站的 Cookie 被另一个域通过加载目标网站而设置或发送，仅 IE 执行了该策略。    </li>
-</ul>
-</li>
-</ul>
-<p>(5)本地存储风险</p>
-<p>本地存储的方式有很多：</p>
-<ul>
-<li>Cookie</li>
-<li>UserData</li>
-<li>localStorage</li>
-<li>local Database</li>
-<li>Flash Cookie</li>
-</ul>
-<p>本地存储的主要风险是被植入广告跟踪标识。</p>
-<p>(6)JavaScript 函数劫持</p>
-<p>只要在函数出发触发前，重写这个函数即可。</p>
-<p>4.CSS</p>
-<p>(1)CSS 容错性</p>
-<p>(2)样式伪装</p>
-<p>(3)CSS 伪装</p>
-<p>:visited 伪类技巧（已修补）<br>::selection（Chrome 下有效）</p>
-<p>(4)CSS3 的属性选择符</p>
-<p>5.ActionScript</p>
-<p>(1)Flash 安全沙箱</p>
-<ul>
-<li>权限控制<ul>
-<li>管理用户控制</li>
-<li>用户控制</li>
-<li>Web 站点控制</li>
-<li>作者开发人员控制</li>
-</ul>
-</li>
-<li>安全沙箱<ul>
-<li>远程沙箱</li>
-<li>本地沙箱</li>
-</ul>
-</li>
-</ul>
-<p>(2)HTML 嵌入 Flash 的安全相关配置</p>
-<p>(3)跨站 Flash</p>
-<p>(4)参数传递</p>
-<p>(5)Flash 里的内嵌 HTML</p>
-<p>(6)与JavaScript 通信</p>
-<p>(7)网络通信</p>
-<p>(8)其他安全问题</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这篇博客详细记录我在阅读本书过程中觉得重要的知识点以及我觉得需要了解的各种前端安全概念。&lt;/p&gt;
-&lt;h2 id=&quot;第一章_Web安全的关键点&quot;&gt;第一章 Web安全的关键点&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;数据与指令&lt;/li&gt;
-&lt;li&gt;浏览器同源策略&lt;/li&gt;
-&lt;li&gt;信任与信任关系&lt;/li&gt;
-&lt;li&gt;社会工程学的作用&lt;/li&gt;
-&lt;li&gt;攻防不单一&lt;/li&gt;
-&lt;li&gt;场景很重要&lt;/li&gt;
-&lt;/ol&gt;
-&lt;blockquote&gt;
-&lt;p&gt;浏览器的同源策略：不同域的客户端脚本在没明确授权的情况下，不能读写对方的资源。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="安全" scheme="http://hellowvirgil.github.io/tags/%E5%AE%89%E5%85%A8/"/>
-    
-      <category term="读书笔记" scheme="http://hellowvirgil.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
