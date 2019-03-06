@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hellowvirgil.github.io/"/>
-  <updated>2019-03-06T15:35:11.520Z</updated>
+  <updated>2019-03-06T15:54:38.313Z</updated>
   <id>http://hellowvirgil.github.io/</id>
   
   <author>
@@ -20,20 +20,24 @@
     <link href="http://hellowvirgil.github.io/2018/08/15/%E5%AE%89%E5%8D%93%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%BB%91%E5%8A%A8%E4%B8%8D%E6%94%AF%E6%8C%81touchend%E4%BA%8B%E4%BB%B6bug/"/>
     <id>http://hellowvirgil.github.io/2018/08/15/安卓移动端滑动不支持touchend事件bug/</id>
     <published>2018-08-15T14:12:38.000Z</published>
-    <updated>2019-03-06T15:35:11.520Z</updated>
+    <updated>2019-03-06T15:54:38.313Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="问题背景">问题背景</h2><p>使用<figure class="highlight"><figcaption><span>active```按下效果时发现部分安卓手机按下后就一直保持按下状态。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;## &#38382;&#39064;&#21407;&#22240;&#10;&#10;&#62; &#22312;&#23433;&#21331;&#19978;,&#28369;&#21160;&#25163;&#26426;&#23631;&#24149;&#30340;&#35302;&#21457;&#20107;&#20214;&#36807;&#31243;&#26159;&#36825;&#26679;&#30340;&#65306;&#10;&#10;``` touchstart ``` -&#62; ``` touchmove ``` &#65292;&#26080; ``` touchend</span><br></pre></td></tr></table></figure></p>
+    <content type="html"><![CDATA[<h2 id="问题背景">问题背景</h2><p>使用<code>touchstart</code>和<code>touchend</code>实现类似<code>css active</code>按下效果时发现部分安卓手机按下后就一直保持按下状态。</p>
+<h2 id="问题原因">问题原因</h2><blockquote>
+<p>在安卓上,滑动手机屏幕的触发事件过程是这样的（无 <code>touchend</code>）：</p>
+</blockquote>
+<p><code>touchstart</code> -&gt; <code>touchmove</code></p>
 <blockquote>
 <p>在iphone上,滑动手机屏幕的触发事件过程是这样的：</p>
 </blockquote>
 <p><code>touchstart</code>-&gt;<code>touchmove</code> -&gt; <code>touchend</code></p>
-<p>所以，在安卓上，滑动不能用touchend事件了（这里并不是说本身不能用<code>touchend</code>事件，只是滑动时无这个事件而已），经过查资料，发现之前很多人说zepto中的touch.JS在微信以及安卓上用swipe的时候失效，其实就是因为用了这个<code>touchend</code>事件，故没有效果。<br><a id="more"></a></p>
+<p>所以，在安卓上，滑动不能用 <code>touchend</code> 事件了（这里并不是说本身不能用<code>touchend</code>事件，只是滑动时无这个事件而已），经过查资料，发现之前很多人说 zepto 中的 touch.js 在微信以及安卓上用 swipe 的时候失效，其实就是因为用了这个<code>touchend</code>事件，故没有效果。<br><a id="more"></a></p>
 <h2 id="解决办法">解决办法</h2><p>解决办法也不是没有的，先说明一下在移动端的事件：</p>
 <ul>
-<li><code>touchstart</code>:手指触摸手机屏幕的触发，即使已经有一个手指放在屏幕上也会触发。</li>
-<li><code>touchmove</code>:手指在手机屏幕时滑动时连续触发，发生期间，调用event.preventDefault()可以阻止滚动</li>
-<li><code>touchend</code>:手机触摸屏幕离开后触发</li>
-<li><code>touchcancel</code>:当系统停止跟踪触摸的时候触发</li>
+<li><code>touchstart</code>: 手指触摸手机屏幕的触发，即使已经有一个手指放在屏幕上也会触发。</li>
+<li><code>touchmove</code>: 手指在手机屏幕时滑动时连续触发，发生期间，调用 <code>event.preventDefault()</code> 可以阻止滚动</li>
+<li><code>touchend</code>: 手机触摸屏幕离开后触发</li>
+<li><code>touchcancel</code>: 当系统停止跟踪触摸的时候触发</li>
 </ul>
 <h2 id="解决办法-1">解决办法</h2><ol>
 <li><p>如果屏幕不考虑滚动的话，可以在<code>touchstart</code>中添加<code>event.preventDefault()</code>，意思是取消了<code>touchstart</code>的默认事件，但是这样做就没有了滚动手机屏幕这个效果，这个适用于局部使用。</p>
@@ -45,12 +49,16 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;问题背景&quot;&gt;问题背景&lt;/h2&gt;&lt;p&gt;使用&lt;figure class=&quot;highlight&quot;&gt;&lt;figcaption&gt;&lt;span&gt;active```按下效果时发现部分安卓手机按下后就一直保持按下状态。&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;#10;## &amp;#38382;&amp;#39064;&amp;#21407;&amp;#22240;&amp;#10;&amp;#10;&amp;#62; &amp;#22312;&amp;#23433;&amp;#21331;&amp;#19978;,&amp;#28369;&amp;#21160;&amp;#25163;&amp;#26426;&amp;#23631;&amp;#24149;&amp;#30340;&amp;#35302;&amp;#21457;&amp;#20107;&amp;#20214;&amp;#36807;&amp;#31243;&amp;#26159;&amp;#36825;&amp;#26679;&amp;#30340;&amp;#65306;&amp;#10;&amp;#10;``` touchstart ``` -&amp;#62; ``` touchmove ``` &amp;#65292;&amp;#26080; ``` touchend&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+      &lt;h2 id=&quot;问题背景&quot;&gt;问题背景&lt;/h2&gt;&lt;p&gt;使用&lt;code&gt;touchstart&lt;/code&gt;和&lt;code&gt;touchend&lt;/code&gt;实现类似&lt;code&gt;css active&lt;/code&gt;按下效果时发现部分安卓手机按下后就一直保持按下状态。&lt;/p&gt;
+&lt;h2 id=&quot;问题原因&quot;&gt;问题原因&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;在安卓上,滑动手机屏幕的触发事件过程是这样的（无 &lt;code&gt;touchend&lt;/code&gt;）：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;touchstart&lt;/code&gt; -&amp;gt; &lt;code&gt;touchmove&lt;/code&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在iphone上,滑动手机屏幕的触发事件过程是这样的：&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;code&gt;touchstart&lt;/code&gt;-&amp;gt;&lt;code&gt;touchmove&lt;/code&gt; -&amp;gt; &lt;code&gt;touchend&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;所以，在安卓上，滑动不能用touchend事件了（这里并不是说本身不能用&lt;code&gt;touchend&lt;/code&gt;事件，只是滑动时无这个事件而已），经过查资料，发现之前很多人说zepto中的touch.JS在微信以及安卓上用swipe的时候失效，其实就是因为用了这个&lt;code&gt;touchend&lt;/code&gt;事件，故没有效果。&lt;br&gt;
+&lt;p&gt;所以，在安卓上，滑动不能用 &lt;code&gt;touchend&lt;/code&gt; 事件了（这里并不是说本身不能用&lt;code&gt;touchend&lt;/code&gt;事件，只是滑动时无这个事件而已），经过查资料，发现之前很多人说 zepto 中的 touch.js 在微信以及安卓上用 swipe 的时候失效，其实就是因为用了这个&lt;code&gt;touchend&lt;/code&gt;事件，故没有效果。&lt;br&gt;
     
     </summary>
     
@@ -112,6 +120,39 @@
     
     
       <category term="npm" scheme="http://hellowvirgil.github.io/tags/npm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>APP中H5页面0.5px边框实现</title>
+    <link href="http://hellowvirgil.github.io/2018/06/15/APP%E4%B8%ADH5%E9%A1%B5%E9%9D%A20.5px%E8%BE%B9%E6%A1%86%E5%AE%9E%E7%8E%B0/"/>
+    <id>http://hellowvirgil.github.io/2018/06/15/APP中H5页面0.5px边框实现/</id>
+    <published>2018-06-15T14:12:38.000Z</published>
+    <updated>2019-03-06T16:00:09.589Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>父容器设置 <code>position: relative;</code></p>
+</blockquote>
+<h3 id="0-5px_下边距">0.5px 下边距</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&amp;<span class="pseudo">::after</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">content</span>:<span class="value"> <span class="string">""</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">bottom</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">right</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">border-bottom</span>:<span class="value"> <span class="number">1px</span> solid <span class="hexcolor">#dadada</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scaleY</span>(.<span class="number">5</span>)</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">transform-origin</span>:<span class="value"> left bottom</span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="0-5px_上边距">0.5px 上边距</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&amp;<span class="pseudo">::before</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">content</span>:<span class="value"> <span class="string">""</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">right</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">border-bottom</span>:<span class="value"> <span class="number">1px</span> solid <span class="hexcolor">#dadada</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scaleY</span>(.<span class="number">5</span>)</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">transform-origin</span>:<span class="value"> left top</span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="0-5px圆角边框">0.5px圆角边框</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&amp;<span class="pseudo">::after</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">content</span>:<span class="value"> <span class="string">""</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">box-sizing</span>:<span class="value"> border-box</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">display</span>:<span class="value"> block</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">200%</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">200%</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">right</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">border</span>:<span class="value"> <span class="number">1px</span> solid <span class="function">rgba</span>(<span class="number">229</span>, <span class="number">71</span>, <span class="number">67</span>, .<span class="number">3</span>)</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">border-radius</span>:<span class="value"> <span class="number">50</span>/<span class="number">75rem</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">transform</span>:<span class="value"> <span class="function">scale</span>(.<span class="number">5</span>)</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">transform-origin</span>:<span class="value"> left top</span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意 transform 的起点，上边距要用左上角，下边距用左下角，且<code>box-sizing</code>要设置为<code>border-box</code>，否则伪元素上下左右各会多1px。</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;父容器设置 &lt;code&gt;position: relative;&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;0-5px_下边距&quot;&gt;0.5px 下边距&lt;/h3&gt;&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;amp;&lt;span class=&quot;pseudo&quot;&gt;::after&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;content&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; &lt;span class=&quot;string&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;position&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; absolute&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;bottom&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;left&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;right&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;border-bottom&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; &lt;span class=&quot;number&quot;&gt;1px&lt;/span&gt; solid &lt;span class=&quot;hexcolor&quot;&gt;#dadada&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;transform&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; &lt;span class=&quot;function&quot;&gt;scaleY&lt;/span&gt;(.&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;transform-origin&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; left bottom&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="移动端开发" scheme="http://hellowvirgil.github.io/tags/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   
@@ -1183,65 +1224,6 @@
     <summary type="html">
     
       &lt;p&gt;很晚才接到一面的电话通知，差点以为我挂了。不得不说，百度的HR是我迄今为止遇到最好的HR，不厌其烦的给我打电话，倘若拿到百度offer的话，那个HR哥哥是我最应该感谢的人~&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="面经" scheme="http://hellowvirgil.github.io/tags/%E9%9D%A2%E7%BB%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>蘑菇街面试整理</title>
-    <link href="http://hellowvirgil.github.io/2015/09/10/%E8%98%91%E8%8F%87%E8%A1%97%E9%9D%A2%E8%AF%95%E6%95%B4%E7%90%86/"/>
-    <id>http://hellowvirgil.github.io/2015/09/10/蘑菇街面试整理/</id>
-    <published>2015-09-10T14:42:38.000Z</published>
-    <updated>2016-07-28T15:42:30.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>离开杭州前的最后一天跑去财富大厦面试，不得不说面试官给人的感觉很好，以下是几个我比较有印象的问题：</p>
-<blockquote>
-<p>做过最有难度的项目？其中遇到的问题？</p>
-</blockquote>
-<p>我回答了询盘落地页，其中遇到了打点曝光，跨域等问题。接着面试官问跨域的解决方案？josnp ， CORS ，服务器代理， document.domain ， websocket等。每样都大概介绍了优缺点和应用场景。接着问 josnp 的实现原理，回答是本质上是通过创建 script 实现跨域，将返回的 json 数据做为参数传入 callback。<br><a id="more"></a></p>
-<blockquote>
-<p>页面优化的方法？</p>
-</blockquote>
-<p>压缩 js ， css ，减少 http 请求， css sprite ，减少 cookie 大小等。</p>
-<blockquote>
-<p>将来想在前端发展的方向？</p>
-</blockquote>
-<p>我回答移动端（个人兴趣）和搜索场景（主要我觉得容易上手）。移动端需要做哪些优化？只答了一部分，面试官说你没有主动去学习移动端知识啊 - - 确实是，要吸取教训。<br>移动端的优化有首屏加载，按需加载，滚动加载， 使用 Loading 进度条，使用 css3 、 iconfont 代替图片， touch 代替  click ，缓存 dom 选择与计算 ， 不滥用 float ，避免重设图片大小，标准化浏览器前缀，尽量使用 css3 动画等。</p>
-<blockquote>
-<p>对开源项目的贡献？最近关注的开源项目？</p>
-</blockquote>
-<p>我回答了对 fxs 前端技能树的贡献，最近关注的是 Sea.js。然后面试官问了 Sea.js 模块 reuire 时才调用， ddefine 时只加载是如何实现的？这个没答上来。结束后查了资料，发现 sea.js 由模块状态的流转来定义行为， define 一个模块时，加载结束回调函数会将 mod.status 变成 LOADED ， require 方法的回调函数会判断当前 mod 状态，mod.status &lt; STATUS.EXECUTING 会执行加载的模块，执行结束后会将 mod.status 变成 EXECUTED。</p>
-<blockquote>
-<p>在阿里实习印象最深的是什么？</p>
-</blockquote>
-<p>我回答了搜索业务场景下的组件模块化，即 Normandy 平台，还有前端集成测试。面试官接着问如果让你做组件化，你会怎么做？我答会按功能进行封装，尽量保证组件的复用性，抽象出相同的部分。面试官继续问封装过什么组件么？我回答了懒加载组件。接着面试官问如何触发懒加载？可不可以优化？我回答通过检测 scrollTop 来触发懒加载，这样会一直计算 scrollTop 的值，优化的办法是不要每次滚轮滚动都计算 scrollTop ，而是每隔一个断点计算一次（比如懒加载的模块高度为 300px ，那就每隔 300px 触发一次计算，若满足条件则加载），可以大大减少计算量。</p>
-<blockquote>
-<p>对 Flux 应用单向数据流的理解？</p>
-</blockquote>
-<p>这个不了解，查阅资料后发现 Flux 是 Facebook 用户建立客户端 Web 应用的前端架构， 它通过利用一个单向的数据流补充了 React 的组合视图组件，这更是一种模式而非正式框架，你能够无需许多新代码情况下立即开始使用 Flux 。</p>
-<p><img src="http://7xiw1x.com1.z0.glb.clouddn.com/flux.png" alt="Flux"></p>
-<p>一个单向数据流是Flux模式的核心，上面示图应该是Flux程序员心中主要的模型图。dispatcher 存储和视图是有着不同输入输出的独立节点，Action动作是一个简单对象，只是包含新的数据和一个标识符类型的属性。</p>
-<p>视图也许引起新的动作Action，这个动作作为用户交互的响应将在整个系统传播：</p>
-<p><img src="http://7xiw1x.com1.z0.glb.clouddn.com/flux2.png" alt="Flux"></p>
-<p>所有通过dispatcher的数据流将作为一个集中式Hub，动作Action在一个action creator方法中被提供给dispatcher，这个动作通常来自于视图中用户的交互，dispatcher然后调用存储已经注册其中的回调函数，分发Action动作到所有的存储，在它们注册的回调函数中，存储会响应每个和它保存的状态有关的每个动作Action，存储然后发射一个 change改变的事件去提醒controller-view控制器-视图，更新到刚刚改变的新数据。controller-view监听这些事件，然后在一个事件处理器中从存储中获取数据，controller-view调用它们自己的”setState()”方法，这会触发视图的重新渲染，包括DOM组件树中所有更新。</p>
-<blockquote>
-<p>熟悉公司的发布流程么？</p>
-</blockquote>
-<p>是的，为此我还用 Node.js 写了一个发布 style 应用的插件。接着介绍了这个插件如何实现的。</p>
-<p>通过这次面试了解到自己还有很多不足，没有深抓细节、不够主动，还有注意要有意识地向自己了解的方向引导，下次一定做得更好。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;离开杭州前的最后一天跑去财富大厦面试，不得不说面试官给人的感觉很好，以下是几个我比较有印象的问题：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;做过最有难度的项目？其中遇到的问题？&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;我回答了询盘落地页，其中遇到了打点曝光，跨域等问题。接着面试官问跨域的解决方案？josnp ， CORS ，服务器代理， document.domain ， websocket等。每样都大概介绍了优缺点和应用场景。接着问 josnp 的实现原理，回答是本质上是通过创建 script 实现跨域，将返回的 json 数据做为参数传入 callback。&lt;br&gt;
     
     </summary>
     
