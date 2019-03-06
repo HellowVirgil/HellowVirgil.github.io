@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 安卓移动端滑动不支持touchend事件 bug · VirgilZone</title><meta name="description" content="安卓移动端滑动不支持touchend事件 bug - Virgil"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="short icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://hellowvirgil.github.io/atom.xml" title="VirgilZone"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/HellowVirgil" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="http://weibo.com/u/3074324883" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="http://www.zhihu.com/people/callmevirgil" target="_blank" class="nav-list-link">ZHIHU</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><section class="container"><div class="post"><article class="post-block"><h1 class="post-title">安卓移动端滑动不支持touchend事件 bug</h1><div class="post-info">Aug 15, 2018</div><div class="post-content"><h2 id="问题背景">问题背景</h2><p>使用<figure class="highlight"><figcaption><span>active```按下效果时发现部分安卓手机按下后就一直保持按下状态。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;## &#38382;&#39064;&#21407;&#22240;&#10;&#10;&#62; &#22312;&#23433;&#21331;&#19978;,&#28369;&#21160;&#25163;&#26426;&#23631;&#24149;&#30340;&#35302;&#21457;&#20107;&#20214;&#36807;&#31243;&#26159;&#36825;&#26679;&#30340;&#65306;&#10;&#10;``` touchstart ``` -&#62; ``` touchmove ``` &#65292;&#26080; ``` touchend</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>在iphone上,滑动手机屏幕的触发事件过程是这样的：</p>
+</blockquote>
+<p><code>touchstart</code>-&gt;<code>touchmove</code> -&gt; <code>touchend</code></p>
+<p>所以，在安卓上，滑动不能用touchend事件了（这里并不是说本身不能用<code>touchend</code>事件，只是滑动时无这个事件而已），经过查资料，发现之前很多人说zepto中的touch.JS在微信以及安卓上用swipe的时候失效，其实就是因为用了这个<code>touchend</code>事件，故没有效果。<br><a id="more"></a></p>
+<h2 id="解决办法">解决办法</h2><p>解决办法也不是没有的，先说明一下在移动端的事件：</p>
+<ul>
+<li><code>touchstart</code>:手指触摸手机屏幕的触发，即使已经有一个手指放在屏幕上也会触发。</li>
+<li><code>touchmove</code>:手指在手机屏幕时滑动时连续触发，发生期间，调用event.preventDefault()可以阻止滚动</li>
+<li><code>touchend</code>:手机触摸屏幕离开后触发</li>
+<li><code>touchcancel</code>:当系统停止跟踪触摸的时候触发</li>
+</ul>
+<h2 id="解决办法-1">解决办法</h2><ol>
+<li><p>如果屏幕不考虑滚动的话，可以在<code>touchstart</code>中添加<code>event.preventDefault()</code>，意思是取消了<code>touchstart</code>的默认事件，但是这样做就没有了滚动手机屏幕这个效果，这个适用于局部使用。</p>
+</li>
+<li><p>使用<code>touchcancel</code>事件，在js中同时绑定<code>touchend</code>和<code>touchcancel</code>事件。</p>
+</li>
+</ol>
+</div></article></div></section><footer><div class="paginator"><a href="/2018/08/10/如何使用公司私有 npm 进行前端开发/" class="next">下一篇</a></div><div data-thread-key="2018/08/15/安卓移动端滑动不支持touchend事件bug/" data-title="安卓移动端滑动不支持touchend事件 bug" data-url="http://hellowvirgil.github.io/2018/08/15/安卓移动端滑动不支持touchend事件bug/" data-author-key="1" class="ds-thread"></div><script>var duoshuoQuery = {short_name:"true"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+
+</script><div class="copyright"><p>© 2016 - 2019 <a href="http://hellowvirgil.github.io">Virgil</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-65933410-1",'auto');ga('send','pageview');</script></body></html>
