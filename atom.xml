@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hellowvirgil.github.io/"/>
-  <updated>2019-03-06T16:21:34.426Z</updated>
+  <updated>2019-03-20T13:51:11.539Z</updated>
   <id>http://hellowvirgil.github.io/</id>
   
   <author>
@@ -20,12 +20,13 @@
     <link href="http://hellowvirgil.github.io/2018/08/21/Android%20%E6%B5%8F%E8%A7%88%E5%99%A8%E6%96%87%E6%9C%AC%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E9%97%AE%E9%A2%98/"/>
     <id>http://hellowvirgil.github.io/2018/08/21/Android 浏览器文本垂直居中问题/</id>
     <published>2018-08-21T15:17:38.000Z</published>
-    <updated>2019-03-06T16:21:34.426Z</updated>
+    <updated>2019-03-20T13:51:11.539Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>问题描述</p>
 </blockquote>
 <p>在开发中，我们常使用 <code>line-height</code> 属性来实现文本的垂直居中，但是在安卓浏览器渲染中有一个常见的问题，就是对于小于 <code>12px</code> 的字体使用 <code>line-height</code> 属性进行垂直居中的时候，渲染出来的效果并不是文字垂直居中，而是会偏上一些。举两个代码示例如下。</p>
+<a id="more"></a>
 <h2 id="大于12px">大于12px</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">span</span>&gt;</span>testtesttest<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">span</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">16px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">background-color</span>:<span class="value"> gray</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">line-height</span>:<span class="value"> <span class="number">16px</span></span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">12px</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
 <p>显示效果</p>
@@ -58,7 +59,7 @@
       &lt;blockquote&gt;
 &lt;p&gt;问题描述&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;在开发中，我们常使用 &lt;code&gt;line-height&lt;/code&gt; 属性来实现文本的垂直居中，但是在安卓浏览器渲染中有一个常见的问题，就是对于小于 &lt;code&gt;12px&lt;/code&gt; 的字体使
+&lt;p&gt;在开发中，我们常使用 &lt;code&gt;line-height&lt;/code&gt; 属性来实现文本的垂直居中，但是在安卓浏览器渲染中有一个常见的问题，就是对于小于 &lt;code&gt;12px&lt;/code&gt; 的字体使用 &lt;code&gt;line-height&lt;/code&gt; 属性进行垂直居中的时候，渲染出来的效果并不是文字垂直居中，而是会偏上一些。举两个代码示例如下。&lt;/p&gt;
     
     </summary>
     
